@@ -19,8 +19,8 @@
     </head>
     <body>
         <div style="margin: 30px">
-            <a href="/mail/"><h1>Cobalt</h1></a>
-            <form action="/mail/campaign" method="POST" enctype="multipart/form-data">
+            <a href="/cobalt/mail/"><h1>Cobalt</h1></a>
+            <form action="/cobalt/mail/campaign" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input name="name" type="text" class="form-control" id="name">
@@ -97,11 +97,11 @@
                     </td>
                     <td>{{ bulk.num_mails }} ({{ bulk.num_sent }} - {{ bulk.num_fail }})</td>
                     <td>
-                        <form action="/mail/send/{{ bulk.id }}" method="POST">
+                        <form action="/cobalt/mail/send/{{ bulk.id }}" method="POST">
                             {% csrf_token %}
                             <input class="btn btn-success" type="submit" value="Send">
-                            <a class="btn btn-primary" href="/mail/campaign/{{ bulk.id }}">View</a>
-                            <a class="btn btn-danger" href="/mail/del-campaign/{{ bulk.id }}">Delete</a>
+                            <a class="btn btn-primary" href="/cobalt/mail/campaign/{{ bulk.id }}">View</a>
+                            <a class="btn btn-danger" href="/cobalt/mail/del-campaign/{{ bulk.id }}">Delete</a>
                         </form>
                     </td>
                 </tr>

@@ -19,13 +19,13 @@ from django.urls import path
 import mail.views as mail_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('mail/', mail_views.mail),
-    path('mail/send/<pk>', mail_views.start_send),
-    path('mail/campaign', mail_views.campaign),
-    path('mail/campaign/<pk>', mail_views.campaign_view),
-    path('mail/del-campaign/<pk>', mail_views.campaign_del),
-    path('mail/preview/<pk>', mail_views.preview),
-    path('accounts/login/', login, {'template_name': 'admin/login.html'}),
-    path('', mail_views.mail),
+    path('cobalt/admin/', admin.site.urls),
+    path('cobalt/mail/', mail_views.mail),
+    path('cobalt/mail/send/<pk>', mail_views.start_send),
+    path('cobalt/mail/campaign', mail_views.campaign),
+    path('cobalt/mail/campaign/<pk>', mail_views.campaign_view),
+    path('cobalt/mail/del-campaign/<pk>', mail_views.campaign_del),
+    path('cobalt/mail/preview/<pk>', mail_views.preview),
+    path('cobalt/accounts/login/', login, {'template_name': 'admin/login.html'}),
+    path('cobalt/', mail_views.mail),
 ]
