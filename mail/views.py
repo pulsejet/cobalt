@@ -10,7 +10,7 @@ from mail.models import BulkMail, Mail
 from .forms import NewCampaignForm
 
 def mail(request, form=None):
-    queryset = BulkMail.objects.all()
+    queryset = BulkMail.objects.all().order_by('-time_of_creation')
     queryset = queryset.annotate(num_mails=Count('mails'))
     queryset = queryset.annotate(num_sent=Count('mails', filter=Q(mails__sent=True)))
     queryset = queryset.annotate(num_fail=Count('mails', filter=Q(mails__failed=True)))
