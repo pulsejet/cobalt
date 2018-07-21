@@ -44,7 +44,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if bulk.completed and not m.failed %}
+                        {% if m.sent and not m.failed %}
                             <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
                         {% else %}
                             <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
