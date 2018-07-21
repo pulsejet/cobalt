@@ -2,6 +2,7 @@ import io
 import csv
 from django.db.models import Count
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.shortcuts import render, HttpResponse
@@ -9,6 +10,7 @@ from django.views.decorators.http import require_http_methods
 from mail.models import BulkMail, Mail
 from .forms import NewCampaignForm
 
+@login_required
 def mail(request, form=None):
     queryset = BulkMail.objects.all().order_by('-time_of_creation')
     queryset = queryset.annotate(num_mails=Count('mails'))
@@ -22,6 +24,7 @@ def mail(request, form=None):
     context = {"bulks": queryset, "form": form}
     return render(request, 'mail.html', context=context)
 
+@login_required
 @require_http_methods(["POST"])
 def start_send(request, pk):
     camp = BulkMail.objects.get(id=pk)
@@ -30,6 +33,7 @@ def start_send(request, pk):
     else:
         return HttpResponse("Job already done!")
 
+@login_required
 @require_http_methods(["POST"])
 def campaign(request):
     form = NewCampaignForm(request.POST, request.FILES)
@@ -76,11 +80,13 @@ def campaign(request):
 
     return mail(request)
 
+@login_required
 def campaign_view(request, pk):
     queryset = BulkMail.objects.get(id=pk)
     context = {"bulk": queryset}
     return render(request, 'campaign.html', context=context)
 
+@login_required
 def preview(request, pk):
     queryset = Mail.objects.get(id=pk)
     return HttpResponse(queryset.data)
