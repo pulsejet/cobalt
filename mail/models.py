@@ -52,7 +52,7 @@ class Mail(models.Model):
         time.sleep(2)
         # Try to blast
         try:
-            sendmail(m.data, m.bulk.from_email, m.email, m.bulk.subject)
+            sendmail(self.data, self.bulk.from_email, self.email, self.bulk.subject)
         except Exception:
             self.failed = True
 
