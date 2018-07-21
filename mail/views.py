@@ -1,6 +1,6 @@
 import io
 import csv
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.views.decorators.http import require_http_methods
 from mail.models import BulkMail, Mail
 from .forms import NewCampaignForm
@@ -14,9 +14,10 @@ def mail(request):
 @require_http_methods(["POST"])
 def start_send(request, pk):
     camp = BulkMail.objects.get(id=pk)
-    camp.completed = True
-    camp.save()
-    return mail(request)
+    if camp.send():
+        return mail(request)
+    else:
+        return HttpResponse("Job already done!")
 
 @require_http_methods(["POST"])
 def campaign(request):
