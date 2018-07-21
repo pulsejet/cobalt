@@ -73,7 +73,6 @@
                     <th>Completed</th>
                     <th>Count (S - F)</th>
                     <th></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -101,10 +100,9 @@
                         <form action="/mail/send/{{ bulk.id }}" method="POST">
                             {% csrf_token %}
                             <input class="btn btn-success" type="submit" value="Send">
+                            <a class="btn btn-primary" href="/mail/campaign/{{ bulk.id }}">View</a>
+                            <a class="btn btn-danger" href="/mail/del-campaign/{{ bulk.id }}">Delete</a>
                         </form>
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" href="/mail/campaign/{{ bulk.id }}">View</a>
                     </td>
                 </tr>
             {% endfor %}

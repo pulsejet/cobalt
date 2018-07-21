@@ -24,6 +24,7 @@ urlpatterns = [
     path('mail/send/<pk>', mail_views.start_send),
     path('mail/campaign', mail_views.campaign),
     path('mail/campaign/<pk>', mail_views.campaign_view),
+    path('mail/del-campaign/<pk>', mail_views.campaign_del),
     path('mail/preview/<pk>', mail_views.preview),
     path('accounts/login/', login, {'template_name': 'admin/login.html'}),
     path('', mail_views.mail),

@@ -90,3 +90,9 @@ def campaign_view(request, pk):
 def preview(request, pk):
     queryset = Mail.objects.get(id=pk)
     return HttpResponse(queryset.data)
+
+@login_required
+def campaign_del(request, pk):
+    queryset = BulkMail.objects.get(id=pk)
+    queryset.delete()
+    return mail(request)
