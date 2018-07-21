@@ -20,6 +20,8 @@ class BulkMail(models.Model):
     def __str__(self):
         return self.name
 
+    @queueable
+    def mark_done(self, *args, **kwargs):
         # Mark campaign done
         self.in_progress = False
         self.completed = True
@@ -31,6 +33,7 @@ class BulkMail(models.Model):
             self.save()
             for tosend in self.mails.all():
                 tosend.send_mail.queue()
+            self.mark_done.queue()
             return True
         else:
             return False
