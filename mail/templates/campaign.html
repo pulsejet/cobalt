@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        {% load static %}
+        <title>Cobalt</title>
+        <script src='{% static "mail/jquery-3.3.1.slim.min.js" %}' integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src='{% static "mail/popper.min.js" %}' integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+        <script src='{% static "mail/bootstrap.min.js" %}' integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+
+        <style>
+            .tick {
+                height: 25px;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="margin: 30px">
+            <a href="/mail/"><h1>Cobalt - Campaign</h1></a>
+            <h3>{{ bulk.name }}</h3>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Sent</th>
+                    <th>Successful</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for m in bulk.mails.all %}
+                <tr>
+                    <td>{{ m.email }}</td>
+                    <td>
+                        {% if m.sent %}
+                            <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
+                        {% else %}
+                            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.failed %}
+                            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
+                        {% else %}
+                            <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" target="_blank" href="/mail/preview/{{m.id}}">Preview</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

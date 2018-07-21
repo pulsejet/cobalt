@@ -1,14 +1,25 @@
 import io
 import csv
+from django.db.models import Count
+from django.db.models import Q
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.http import require_http_methods
 from mail.models import BulkMail, Mail
 from .forms import NewCampaignForm
-from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
 
-def mail(request):
-    context = {"bulks": BulkMail.objects.all()}
+def mail(request, form=None):
+    queryset = BulkMail.objects.all()
+    queryset = queryset.annotate(num_mails=Count('mails'))
+    queryset = queryset.annotate(num_sent=Count('mails', filter=Q(mails__sent=True)))
+    queryset = queryset.annotate(num_fail=Count('mails', filter=Q(mails__failed=True)))
+    queryset = queryset.annotate(progress=Count('mails'))
+
+    for bulk in queryset:
+        bulk.progress = int((bulk.num_sent / bulk.num_mails) * 100)
+
+    context = {"bulks": queryset, "form": form}
     return render(request, 'mail.html', context=context)
 
 @require_http_methods(["POST"])
@@ -61,7 +72,15 @@ def campaign(request):
             Mail.objects.create(bulk=camp, email=row['email'], data=body)
 
     else:
-        context = {"bulks": BulkMail.objects.all(), "form": form}
-        return render(request, 'mail.html', context=context)
+        return mail(request, form=form)
 
     return mail(request)
+
+def campaign_view(request, pk):
+    queryset = BulkMail.objects.get(id=pk)
+    context = {"bulk": queryset}
+    return render(request, 'campaign.html', context=context)
+
+def preview(request, pk):
+    queryset = Mail.objects.get(id=pk)
+    return HttpResponse(queryset.data)

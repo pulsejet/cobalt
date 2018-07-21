@@ -22,4 +22,6 @@ urlpatterns = [
     path('mail/', mail_views.mail),
     path('mail/send/<pk>', mail_views.start_send),
     path('mail/campaign', mail_views.campaign),
+    path('mail/campaign/<pk>', mail_views.campaign_view),
+    path('mail/preview/<pk>', mail_views.preview),
 ]

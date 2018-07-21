@@ -1,15 +1,25 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        {% load static %}
         <title>Cobalt</title>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+        <script src='{% static "mail/jquery-3.3.1.slim.min.js" %}' integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src='{% static "mail/popper.min.js" %}' integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+        <script src='{% static "mail/bootstrap.min.js" %}' integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+
+        <style>
+            .tick {
+                height: 25px;
+            }
+            td, th {
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
         <div style="margin: 30px">
-            <h1>Cobalt</h1>
+            <a href="/mail/"><h1>Cobalt</h1></a>
             <form action="/mail/campaign" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -59,10 +69,11 @@
                 <tr>
                     <th>Campaign Name</th>
                     <th>From E-Mail</th>
-                    <th>In Progress</th>
+                    <th>Progress</th>
                     <th>Completed</th>
-                    <th>Count</th>
-                    <th>Send</th>
+                    <th>Count (S - F)</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -70,14 +81,30 @@
                 <tr>
                     <td>{{ bulk.name }}</td>
                     <td>{{ bulk.from_email }}</td>
-                    <td>{{ bulk.in_progress }}</td>
-                    <td>{{ bulk.completed }}</td>
-                    <td>{{ bulk.mails.count }}</td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ bulk.progress }}"
+                                 aria-valuemin="0" aria-valuemax="100" style="width:{{ bulk.progress }}%">
+                                {{ bulk.progress }}%
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        {% if bulk.completed %}
+                            <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
+                        {% else %}
+                            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
+                        {% endif %}
+                    </td>
+                    <td>{{ bulk.num_mails }} ({{ bulk.num_sent }} - {{ bulk.num_fail }})</td>
                     <td>
                         <form action="/mail/send/{{ bulk.id }}" method="POST">
                             {% csrf_token %}
                             <input class="btn btn-success" type="submit" value="Send">
                         </form>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="/mail/campaign/{{ bulk.id }}">View</a>
                     </td>
                 </tr>
             {% endfor %}
