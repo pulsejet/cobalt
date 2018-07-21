@@ -20,24 +20,6 @@ class BulkMail(models.Model):
     def __str__(self):
         return self.name
 
-    @queueable
-    def send_mails(self, *args, **kwargs):
-        for m in self.mails.all():
-            print("Sending email to", m.email)
-
-            # Sleep
-            time.sleep(2)
-
-            # Try to blast
-            try:
-                sendmail(m.data, m.bulk.from_email, m.email, m.bulk.subject)
-            except Exception:
-                m.failed = True
-
-            # Mark sent
-            m.sent = True
-            m.save()
-
         # Mark campaign done
         self.in_progress = False
         self.completed = True
@@ -47,7 +29,8 @@ class BulkMail(models.Model):
         if not self.in_progress and not self.completed:
             self.in_progress = True
             self.save()
-            self.send_mails.queue()
+            for tosend in self.mails.all():
+                tosend.send_mail.queue()
             return True
         else:
             return False
@@ -62,3 +45,17 @@ class Mail(models.Model):
 
     def __str__(self):
         return self.bulk.name + ' - ' + self.email
+
+    @queueable
+    def send_mail(self, *args, **kwargs):
+        print("Sending email to", self.email)
+        time.sleep(2)
+        # Try to blast
+        try:
+            sendmail(m.data, m.bulk.from_email, m.email, m.bulk.subject)
+        except Exception:
+            self.failed = True
+
+        # Mark sent
+        self.sent = True
+        self.save()
