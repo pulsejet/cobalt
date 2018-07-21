@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Cobalt</title>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div style="margin: 30px">
+            <h1>Cobalt</h1>
+            <form action="/mail/campaign" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input name="name" type="text" class="form-control" id="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input name="description" type="text" class="form-control" id="description">
+                </div>
+
+                <div class="form-group">
+                    <label for="from_email">From Email:</label>
+                    <input name="from_email" type="email" class="form-control" id="from_email">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <input name="subject" type="text" class="form-control" id="subject">
+                </div>
+
+                <div class="form-group">
+                    <label for="csvfile">CSV File</label>
+                    <input name="csv" type="file" class="form-control-file" id="csvfile">
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">Template:</label>
+                    <textarea name="template" class="form-control" rows="5" id="template"></textarea>
+                </div>
+
+                {% csrf_token %}
+                <input class="btn btn-warning" type="submit" value="Create">
+            </form>
+        </div>
+
+        {% if form and form.errors %}
+            {% for error, val in form.errors.items %}
+                <div class="alert alert-danger">
+                    <strong>{{ error }} {{ val }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Campaign Name</th>
+                    <th>From E-Mail</th>
+                    <th>In Progress</th>
+                    <th>Completed</th>
+                    <th>Count</th>
+                    <th>Send</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for bulk in bulks %}
+                <tr>
+                    <td>{{ bulk.name }}</td>
+                    <td>{{ bulk.from_email }}</td>
+                    <td>{{ bulk.in_progress }}</td>
+                    <td>{{ bulk.completed }}</td>
+                    <td>{{ bulk.mails.count }}</td>
+                    <td>
+                        <form action="/mail/send/{{ bulk.id }}" method="POST">
+                            {% csrf_token %}
+                            <input class="btn btn-success" type="submit" value="Send">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
