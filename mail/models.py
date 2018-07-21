@@ -11,7 +11,7 @@ class BulkMail(models.Model):
 
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
-    from_email = models.EmailField()
+    from_email = models.CharField(max_length=150)
     in_progress = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     template = models.TextField()
