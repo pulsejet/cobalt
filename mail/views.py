@@ -19,7 +19,11 @@ def mail(request, form=None):
     queryset = queryset.annotate(progress=Count('mails'))
 
     for bulk in queryset:
-        bulk.progress = int((bulk.num_sent / bulk.num_mails) * 100)
+        # Check for no moail
+        if bulk.num_mails == 0:
+            bulk.progress = 0
+        else:
+            bulk.progress = int((bulk.num_sent / bulk.num_mails) * 100)
 
     context = {"bulks": queryset, "form": form}
     return render(request, 'mail.html', context=context)
