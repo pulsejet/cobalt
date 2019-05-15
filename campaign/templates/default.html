@@ -8,6 +8,9 @@
         <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' crossorigin="anonymous">
         <link rel="stylesheet" href='{% static "mail/custom.css" %}' crossorigin="anonymous">
         <script src='{% static "mail/bootstrap.min.js" %}' crossorigin="anonymous"></script>
+        <script src='{% static "mail/jquery.csv.min.js" %}' crossorigin="anonymous"></script>
+        <script src='{% static "mail/quill.min.js" %}' crossorigin="anonymous"></script>
+        <link rel="stylesheet" href='{% static "mail/quill.snow.css" %}' crossorigin="anonymous">
     </head>
     <body>
         <div style="margin: 30px">
@@ -39,12 +42,26 @@
 
                 <div class="form-group">
                     <label for="csvfile">CSV File</label>
-                    <input name="csv" type="file" class="form-control-file" id="csvfile">
+                    <input name="csv" type="file" class="form-control-file" id="csvfile" onchange='openFile(event)'>
                 </div>
 
                 <div class="form-group">
-                    <label for="comment">Template:</label>
+                    <label for="editor">Available Variables:</label>
+                    <div id="variables"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editor">Template:</label>
+                    <div class="editor" id="editor"></div>
+                </div>
+
+                <div class="form-group" style="display: none">
                     <textarea name="template" class="form-control" rows="5" id="template"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tpreview">Preview:</label>
+                    <div id="tpreview"></div>
                 </div>
 
                 {% csrf_token %}
@@ -73,5 +90,75 @@
                 </tbody>
             </table>
         </div>
+
+        <script>
+            // {% verbatim %}
+            var toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                [{ 'align': [] }],
+
+                ['clean']
+            ];
+
+            var options = {
+                modules: {
+                    toolbar: toolbarOptions
+                },
+                placeholder: 'Write mail content here ...',
+                readOnly: false,
+                theme: 'snow'
+            };
+            var editor = new Quill('.editor', options);
+            var csventry = {};
+
+            function textChange() {
+                var html = editor.root.innerHTML;
+                for (var key in csventry) {
+                    if (csventry.hasOwnProperty(key)) {
+                        var re = new RegExp(`{{${key}}}`, 'g');
+                        html = html.replace(re, csventry[key]);
+                    }
+                }
+                styles = `<style> li, p { white-space: pre-wrap; margin: 0; padding: 0; }
+                ol, ul { margin-top: 0; margin-bottom:0 } </style>`;
+
+                $('#tpreview').html(styles + html);
+                $('#template').val(styles + html);
+            }
+
+            editor.on('text-change', function(delta, oldDelta, source) {
+                textChange();
+            });
+
+            function addvar(variable, event) {
+                editor.insertText(editor.getSelection().index, `{{${variable}}}`);
+                event.preventDefault();
+            }
+
+            var openFile = function(event) {
+                var input = event.target;
+                var reader = new FileReader();
+                reader.onload = function(){
+                    csventry = ($.csv.toObjects(reader.result))[0];
+                    html = '';
+
+                    for (var key in csventry) {
+                        html += `<button class='btn' onclick="addvar('${key}', event)">${key}</button>\n`
+                    }
+
+                    $('#variables').html(html);
+                    console.log(csventry);
+                    textChange();
+                };
+                reader.readAsText(input.files[0]);
+            };
+            // {% endverbatim %}
+        </script>
     </body>
 </html>

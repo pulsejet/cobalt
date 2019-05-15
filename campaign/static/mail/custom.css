@@ -23,6 +23,15 @@ td, th {
     animation: spin 1s infinite linear;
 }
 
+#tpreview {
+    margin: 10px;
+    border: 2px solid gray;
+}
+
+#variables {
+    font-family: monospace;
+}
+
 @keyframes spin {
     from {transform:rotate(0deg);}
     to {transform:rotate(-360deg);}
