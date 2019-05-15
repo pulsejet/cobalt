@@ -11,7 +11,7 @@
     </head>
     <body>
         <div style="margin: 30px">
-            <a href="/cobalt/mail/"><h1>Cobalt - Campaign</h1></a>
+            <a href="/cobalt/mail/"><h1>Cobalt</h1></a>
             <h3>{{ campaign.name }}</h3>
         </div>
 
@@ -27,21 +27,7 @@
             </thead>
             <tbody>
             {% for m in campaign.mails.all %}
-                <tr>
-                    <td>{{ m.email }}</td>
-                    <td>
-                        {% if m.success %}
-                            <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
-                        {% else %}
-                            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
-                        {% endif %}
-                    </td>
-                    <td>{{ m.try_count }}</td>
-                    <td>{{ m.error }}</td>
-                    <td>
-                        <a class="btn btn-primary" target="_blank" href="/cobalt/mail/preview/{{m.id}}">Preview</a>
-                    </td>
-                </tr>
+                {% include "mail_row.html" with m=m %}
             {% endfor %}
             </tbody>
         </table>

@@ -66,44 +66,18 @@
                 </thead>
                 <tbody>
                 {% for camp in campaigns %}
-                    <tr>
-                        <td>{{ camp.name }}</td>
-                        <td>{{ camp.from_email }}</td>
-                        <td>
-                            {% if camp.processing %}
-                                <img class="tick spinner" src='{% static "mail/processing.png" %}' alt="True"/>
-                            {% else %}
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ camp.progress }}"
-                                        aria-valuemin="0" aria-valuemax="100" style="width:{{ camp.progress }}%">
-                                        {{ camp.progress }}%
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if camp.completed %}
-                                <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
-                            {% else %}
-                                <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
-                            {% endif %}
-                        </td>
-                        <td>{{ camp.num_mails }} ({{ camp.num_sent }})</td>
-                        <td>
-                            <form class="fbtn" action="/cobalt/mail/send/{{ camp.id }}" method="POST">
-                                {% csrf_token %}
-                                <input class="btn btn-success" type="submit" value="Send" {% if camp.processing %} disabled {% endif %}>
-                            </form>
-                            <a class="btn btn-primary" href="/cobalt/mail/campaign/{{ camp.id }}">View</a>
-                            <form class="fbtn" action="/cobalt/mail/del-campaign/{{ camp.id }}" method="POST">
-                                {% csrf_token %}
-                                <input class="btn btn-danger" type="submit" value="Delete">
-                            </form>
-                        </td>
+                    <tr id="camp-{{camp.id}}">
+                        {% include "campaign_row.html" with camp=camp %}
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
+
+        <script>
+            $('.refresh-pl').each(function(index, elem) {
+                $(elem.parentElement).css('color', 'red');
+            });
+        </script>
     </body>
 </html>

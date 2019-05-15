@@ -21,6 +21,7 @@ import campaign.views as mail_views
 urlpatterns = [
     path('cobalt/admin/', admin.site.urls),
     path('cobalt/mail/', mail_views.mail, name='default'),
+    path('cobalt/mail/campaign-row/<pk>', mail_views.campaign_row),
     path('cobalt/mail/send/<pk>', mail_views.start_send),
     path('cobalt/mail/campaign', mail_views.campaign),
     path('cobalt/mail/campaign/<pk>', mail_views.campaign_view),

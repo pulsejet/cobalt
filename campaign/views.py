@@ -10,18 +10,36 @@ from campaign.forms import NewCampaignForm
 @login_required
 def mail(request, form=None):
     queryset = Campaign.objects.all().order_by('-time_of_creation')
-    queryset = queryset.annotate(num_mails=Count('mails'))
-    queryset = queryset.annotate(num_sent=Count('mails', filter=Q(mails__success=True)))
+    queryset = annotate_campaign_queryset(queryset)
 
     for camp in queryset:
-        # Check for no mail
-        if camp.num_mails == 0:
-            camp.progress = 0
-        else:
-            camp.progress = int((camp.num_sent / camp.num_mails) * 100)
+        annotate_campaign_progress(camp)
 
     context = {"campaigns": queryset, "form": form}
-    return render(request, 'mail.html', context=context)
+    return render(request, 'default.html', context=context)
+
+@login_required
+def campaign_row(request, pk):
+    """Single row of campaign HTML."""
+    queryset = Campaign.objects.filter(id=pk)
+    queryset = annotate_campaign_queryset(queryset)
+    camp = queryset.first()
+    annotate_campaign_progress(camp)
+    context = {"camp": camp}
+    return render(request, 'campaign_row.html', context=context)
+
+def annotate_campaign_queryset(queryset):
+    """Set annotations of queryset."""
+    queryset = queryset.annotate(num_mails=Count('mails'))
+    queryset = queryset.annotate(num_sent=Count('mails', filter=Q(mails__success=True)))
+    return queryset
+
+def annotate_campaign_progress(camp):
+    """Set progess of campaign."""
+    if camp.num_mails == 0:
+        camp.progress = 0
+    else:
+        camp.progress = int((camp.num_sent / camp.num_mails) * 100)
 
 @login_required
 @require_http_methods(["POST"])
@@ -30,11 +48,10 @@ def start_send(request, pk):
     if not camp.in_progress:
         camp.in_progress = True
         camp.save()
-        for mid in camp.mails.values_list('id', flat=True):
-            tasks.send_mail.delay(mid)
+        tasks.send_campaign.delay(camp.id)
         return HttpResponseRedirect(reverse('default'))
 
-    return HttpResponse("Job already started!")
+    return HttpResponse("Job in progress!")
 
 @login_required
 @require_http_methods(["POST"])
