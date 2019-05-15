@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        {% load static %}
+        <title>Cobalt</title>
+        <script src='{% static "mail/jquery-3.3.1.slim.min.js" %}' crossorigin="anonymous"></script>
+        <script src='{% static "mail/popper.min.js" %}' crossorigin="anonymous"></script>
+        <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' crossorigin="anonymous">
+        <link rel="stylesheet" href='{% static "mail/custom.css" %}' crossorigin="anonymous">
+        <script src='{% static "mail/bootstrap.min.js" %}' crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div style="margin: 30px">
+            <a href="/cobalt/mail/"><h1>Cobalt</h1></a>
+
+            {% if form and form.errors %}
+                {% for error, val in form.errors.items %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error }} {{ val }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form action="/cobalt/mail/campaign" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input name="name" type="text" class="form-control" id="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="from_email">From E-Mail (format - <b>Your Name &lt;user@site.com&gt;</b>):</label>
+                    <input name="from_email" type="text" class="form-control" id="from_email">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <input name="subject" type="text" class="form-control" id="subject">
+                </div>
+
+                <div class="form-group">
+                    <label for="csvfile">CSV File</label>
+                    <input name="csv" type="file" class="form-control-file" id="csvfile">
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">Template:</label>
+                    <textarea name="template" class="form-control" rows="5" id="template"></textarea>
+                </div>
+
+                {% csrf_token %}
+                <input class="btn btn-warning" type="submit" value="Create">
+            </form>
+        </div>
+
+        <div class="camp-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Campaign Name</th>
+                        <th>From E-Mail</th>
+                        <th>Progress</th>
+                        <th>Completed</th>
+                        <th>Count (Sent)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for camp in campaigns %}
+                    <tr>
+                        <td>{{ camp.name }}</td>
+                        <td>{{ camp.from_email }}</td>
+                        <td>
+                            {% if camp.processing %}
+                                <img class="tick spinner" src='{% static "mail/processing.png" %}' alt="True"/>
+                            {% else %}
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ camp.progress }}"
+                                        aria-valuemin="0" aria-valuemax="100" style="width:{{ camp.progress }}%">
+                                        {{ camp.progress }}%
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if camp.completed %}
+                                <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
+                            {% else %}
+                                <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
+                            {% endif %}
+                        </td>
+                        <td>{{ camp.num_mails }} ({{ camp.num_sent }})</td>
+                        <td>
+                            <form class="fbtn" action="/cobalt/mail/send/{{ camp.id }}" method="POST">
+                                {% csrf_token %}
+                                <input class="btn btn-success" type="submit" value="Send" {% if camp.processing %} disabled {% endif %}>
+                            </form>
+                            <a class="btn btn-primary" href="/cobalt/mail/campaign/{{ camp.id }}">View</a>
+                            <form class="fbtn" action="/cobalt/mail/del-campaign/{{ camp.id }}" method="POST">
+                                {% csrf_token %}
+                                <input class="btn btn-danger" type="submit" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
