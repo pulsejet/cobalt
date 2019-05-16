@@ -28,4 +28,5 @@ urlpatterns = [
     path('del-campaign/<pk>', mail_views.campaign_del),
     path('preview/<pk>', mail_views.preview),
     path('accounts/login/', LoginView.as_view(template_name='admin/login.html')),
+    path('signout', mail_views.cobalt_logout),
 ]

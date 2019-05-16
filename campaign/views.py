@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db.models import Count
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse
 from django.views.decorators.http import require_http_methods
 import campaign.tasks as tasks
@@ -89,4 +90,8 @@ def preview(request, pk):
 def campaign_del(request, pk):
     queryset = Campaign.objects.get(id=pk)
     queryset.delete()
+    return HttpResponseRedirect(reverse('default'))
+
+def cobalt_logout(request):
+    logout(request)
     return HttpResponseRedirect(reverse('default'))
