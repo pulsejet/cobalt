@@ -14,7 +14,7 @@
     </head>
     <body>
         <div style="margin: 30px">
-            <a href="/cobalt/mail/"><h1>Cobalt</h1></a>
+            <a href=""><h1>Cobalt</h1></a>
 
             {% if form and form.errors %}
                 {% for error, val in form.errors.items %}
@@ -24,7 +24,7 @@
                 {% endfor %}
             {% endif %}
 
-            <form action="/cobalt/mail/campaign" method="POST" enctype="multipart/form-data">
+            <form action="/campaign" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input name="name" type="text" class="form-control" id="name">
@@ -95,13 +95,11 @@
             // {% verbatim %}
             var toolbarOptions = [
                 ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                ['blockquote', 'code-block'],
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                 [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
                 [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                [{ 'align': [] }],
 
                 ['clean']
             ];
@@ -129,7 +127,7 @@
                 ol, ul { margin-top: 0; margin-bottom:0 } </style>`;
 
                 $('#tpreview').html(styles + html);
-                $('#template').val(styles + html);
+                $('#template').val(styles + editor.root.innerHTML);
             }
 
             editor.on('text-change', function(delta, oldDelta, source) {
@@ -137,8 +135,8 @@
             });
 
             function addvar(variable, event) {
-                editor.insertText(editor.getSelection().index, `{{${variable}}}`);
                 event.preventDefault();
+                editor.insertText(editor.getSelection().index, `{{${variable}}}`);
             }
 
             var openFile = function(event) {

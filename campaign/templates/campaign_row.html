@@ -28,12 +28,12 @@
 </td>
 <td>{{ camp.num_mails }} ({{ camp.num_sent }})</td>
 <td>
-    <form class="fbtn" action="/cobalt/mail/send/{{ camp.id }}" method="POST">
+    <form class="fbtn" action="send/{{ camp.id }}" method="POST">
         {% csrf_token %}
         <input class="btn btn-success" type="submit" value="Send" {% if camp.processing or camp.in_progress %} disabled {% endif %}>
     </form>
-    <a class="btn btn-primary" href="/cobalt/mail/campaign/{{ camp.id }}">View</a>
-    <form class="fbtn" action="/cobalt/mail/del-campaign/{{ camp.id }}" method="POST">
+    <a class="btn btn-primary" href="campaign/{{ camp.id }}">View</a>
+    <form class="fbtn" action="del-campaign/{{ camp.id }}" method="POST">
         {% csrf_token %}
         <input class="btn btn-danger" type="submit" value="Delete">
     </form>
@@ -42,7 +42,7 @@
 {% if camp.processing or camp.in_progress %}
 <script>
     setTimeout(function() {
-        const url = '/cobalt/mail/campaign-row/{{camp.id}}';
+        const url = '/campaign-row/{{camp.id}}';
         console.log('Refreshing {{ camp.name }}');
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
