@@ -1,42 +1,28 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        {% load static %}
-        <title>Cobalt</title>
-        <base href="{{ settings.BASE_URL }}" />
+{% extends 'base.html' %}
 
-        <script src='{% static "mail/jquery-3.3.1.slim.min.js" %}' crossorigin="anonymous"></script>
-        <script src='{% static "mail/popper.min.js" %}' crossorigin="anonymous"></script>
-        <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' crossorigin="anonymous">
-        <link rel="stylesheet" href='{% static "mail/custom.css" %}' crossorigin="anonymous">
-        <script src='{% static "mail/bootstrap.min.js" %}' crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <div style="margin: 30px">
-            <a class="header" href="{{ settings.BASE_URL }}"><h1> --- Cobalt --- </h1></a>
-            <h3>{{ campaign.name }}</h3>
-            <h5>{{ campaign.subject }}</h5>
-        </div>
+{% load static %}
 
-        <div class="camp-table">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Sent</th>
-                        <th>Try Count</th>
-                        <th>Error</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for m in campaign.mails.all %}
-                    {% include "mail_row.html" with m=m %}
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+{% block content %}
+    <h3>{{ campaign.name }}</h3>
+    <h5>{{ campaign.subject }}</h5>
 
-        {% include "footer.html" %}
-    </body>
-</html>
+    <div class="camp-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Sent</th>
+                    <th>Try Count</th>
+                    <th>Error</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for m in campaign.mails.all %}
+                {% include "mail_row.html" with m=m %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,20 +1,10 @@
+{% extends 'base.html' %}
 {% load i18n static %}
 
-<html>
-    <head>
-        <title>Cobalt Login</title>
-        <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' crossorigin="anonymous">
-        <link rel="stylesheet" href='{% static "mail/custom.css" %}' crossorigin="anonymous">
-        <link rel="stylesheet" href='{% static "mail/login.css" %}' crossorigin="anonymous">
-    </head>
+{% block content %}
+    <link rel="stylesheet" href='{% static "mail/login.css" %}' crossorigin="anonymous">
 
-    <body>
-        <div style="margin: 30px">
-            <a class="header" href="{{ settings.BASE_URL }}"><h1> --- Cobalt --- </h1></a>
-        </div>
-
-        <div id="content-main">
-
+    <div id="content-main">
         <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
             <div class="form-row">
             {{ form.username.errors }}
@@ -46,7 +36,5 @@
         </p>
         {% endfor %}
         {% endif %}
-
-        </div>
-    </body>
-</html>
+    </div>
+{% endblock %}

@@ -4,6 +4,17 @@ body {
     background-color: #fcfcfc;
 }
 
+#maindiv {
+    margin: 30px;
+    margin-bottom: 0;
+}
+
+#outerdiv {
+    min-height: calc(100vh - 60px);
+    position: relative;
+    padding-bottom: 60px;
+}
+
 a.header, a.header * {
     text-decoration: none;
     color: black;
@@ -23,7 +34,9 @@ a.header {
 }
 
 .footer {
-    margin-top: 20px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }
 
 .footer * {
@@ -37,8 +50,7 @@ a.header {
 
 .camp-table table {
     min-width: 1000px;
-    width: calc(100% - 60px);
-    margin: 0 auto;
+    margin-top: 20px;
     border: 2px solid #eee;
     background-color: white;
 }
