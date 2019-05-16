@@ -6,3 +6,4 @@ class NewCampaignForm(forms.Form):
     from_email = forms.CharField()
     csv = forms.FileField()
     template = forms.CharField()
+    emailvar = forms.CharField()

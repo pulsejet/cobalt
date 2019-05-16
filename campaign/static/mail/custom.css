@@ -86,6 +86,7 @@ td, th {
     to {transform:rotate(-360deg);}
 }
 
+/* Quilljs */
 .ql-editor{
     min-height:150px;
 }

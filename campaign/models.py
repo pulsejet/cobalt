@@ -14,6 +14,7 @@ class Campaign(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
     from_email = models.CharField(max_length=150)
+    email_variable = models.CharField(max_length=150, default='email')
     in_progress = models.BooleanField(default=False)
     processing = models.BooleanField(default=True)
     completed = models.BooleanField(default=False)

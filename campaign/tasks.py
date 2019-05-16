@@ -53,17 +53,19 @@ def process_campaign(cid):
 
     data = camp.csv.read().decode('utf-8')
     rows = list(csv.DictReader(io.StringIO(data)))
+    emvar = camp.email_variable
+
     for row in rows:
         # Check validity of email
-        if 'email' not in row or not row['email']:
+        if emvar not in row or not row[emvar]:
             continue
         try:
-            validate_email(row['email'])
+            validate_email(row[emvar])
         except ValidationError:
             continue
 
         # Create object
-        Mail.objects.create(campaign=camp, email=row['email'], data=json.dumps(row))
+        Mail.objects.create(campaign=camp, email=row[emvar], data=json.dumps(row))
 
     camp.processing = False
     camp.save()

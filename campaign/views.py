@@ -64,10 +64,12 @@ def campaign(request):
         from_email = request.POST['from_email']
         subject = request.POST['subject']
         template = request.POST['template']
+        emailvar = request.POST['emailvar']
 
         # Create new campaign
         camp = Campaign.objects.create(
-            name=name, from_email=from_email, template=template, subject=subject, csv=request.FILES['csv'])
+            name=name, from_email=from_email, template=template, subject=subject,
+            csv=request.FILES['csv'], email_variable=emailvar)
         tasks.process_campaign.delay(camp.id)
     else:
         return mail(request, form=form)

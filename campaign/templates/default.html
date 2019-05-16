@@ -55,6 +55,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="editor">Email Variable:</label>
+                    <div id="email-variables"></div>
+                    <input name="emailvar" type="text" class="form-control" id="emailvar" hidden>
+                </div>
+
+                <div class="form-group">
                     <label for="editor">Template:</label>
                     <div class="editor" id="editor"></div>
                 </div>
@@ -97,74 +103,7 @@
 
         {% include "footer.html" %}
 
-        <script>
-            // {% verbatim %}
-            var toolbarOptions = [
-                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-                [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-
-                ['clean']
-            ];
-
-            var options = {
-                modules: {
-                    toolbar: toolbarOptions
-                },
-                placeholder: 'Write mail content here ...',
-                readOnly: false,
-                theme: 'snow'
-            };
-            var editor = new Quill('.editor', options);
-            var csventry = {};
-
-            function textChange() {
-                var html = editor.root.innerHTML;
-                for (var key in csventry) {
-                    if (csventry.hasOwnProperty(key)) {
-                        var re = new RegExp(`{{${key}}}`, 'g');
-                        html = html.replace(re, csventry[key]);
-                    }
-                }
-                styles = `<style> li, p { white-space: pre-wrap; margin: 0; padding: 0; }
-                ol, ul { margin-top: 0; margin-bottom:0 } </style>`;
-
-                $('#tpreview').html(styles + html);
-                $('#template').val(styles + editor.root.innerHTML);
-            }
-
-            editor.on('text-change', function(delta, oldDelta, source) {
-                textChange();
-            });
-
-            function addvar(variable, event) {
-                event.preventDefault();
-                editor.insertText(editor.getSelection().index, `{{${variable}}}`);
-            }
-
-            var openFile = function(input) {
-                var reader = new FileReader();
-                reader.onload = function(){
-                    csventry = ($.csv.toObjects(reader.result))[0];
-                    html = '';
-
-                    for (var key in csventry) {
-                        html += `<button class='btn varbtn' onclick="addvar('${key}', event)">${key}</button>\n`
-                    }
-
-                    $('#variables').html(html);
-                    console.log(csventry);
-                    textChange();
-                };
-                reader.readAsText(input.files[0]);
-                $('#csvname').text(input.files[0].name);
-            };
-            // {% endverbatim %}
-        </script>
-
+        <script src='{% static "mail/default.js" %}' crossorigin="anonymous"></script>
         <script src='{% static "mail/dragdrop.js" %}' crossorigin="anonymous"></script>
     </body>
 </html>
