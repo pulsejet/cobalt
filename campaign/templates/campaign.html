@@ -13,23 +13,26 @@
         <div style="margin: 30px">
             <a href="/"><h1>Cobalt</h1></a>
             <h3>{{ campaign.name }}</h3>
+            <h5>{{ campaign.subject }}</h5>
         </div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Sent</th>
-                    <th>Try Count</th>
-                    <th>Error</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for m in campaign.mails.all %}
-                {% include "mail_row.html" with m=m %}
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="camp-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Sent</th>
+                        <th>Try Count</th>
+                        <th>Error</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for m in campaign.mails.all %}
+                    {% include "mail_row.html" with m=m %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
