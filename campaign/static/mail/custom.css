@@ -1,6 +1,7 @@
 body {
     overflow-y: scroll;
     overflow-x: hidden;
+    background-color: #fcfcfc;
 }
 
 a.header, a.header * {
@@ -36,10 +37,19 @@ a.header {
 
 .camp-table table {
     min-width: 1000px;
+    width: calc(100% - 60px);
+    margin: 0 auto;
+    border: 2px solid #eee;
+    background-color: white;
 }
 
 .tick {
     height: 25px;
+}
+
+th {
+    background-color: black;
+    color: white;
 }
 
 td, th {
@@ -64,7 +74,7 @@ td, th {
 
 #tpreview {
     padding: 10px;
-    border: 2px solid gray;
+    border: 2px solid #ddd;
 }
 
 #variables {
@@ -79,7 +89,7 @@ td, th {
 /* Box css */
 .box {
     font-size: 1.25rem; /* 20 */
-    background-color: #fafafa;
+    background-color: #f4f4f4;
     position: relative;
     padding: 40px 20px;
     cursor: pointer;
