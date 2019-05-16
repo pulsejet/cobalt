@@ -42,6 +42,7 @@ editor.on('text-change', function(delta, oldDelta, source) {
 
 function addvar(variable, event) {
     event.preventDefault();
+    if (!editor.getSelection()) editor.setSelection(0);
     editor.insertText(editor.getSelection().index, `{{${variable}}}`);
 }
 
