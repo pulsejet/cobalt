@@ -13,7 +13,7 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="username">Username:</label>
-                    <input name="username" type="text" class="form-control" id="auth-username">
+                    <input name="username" type="text" class="form-control" id="auth-username" value="{{ request.user.username }}">
                 </div>
                 <div class="form-group">
                     <label for="username">Password:</label>
