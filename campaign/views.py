@@ -83,7 +83,7 @@ def campaign_view(request, pk):
 @login_required
 def preview(request, pk):
     queryset = Mail.objects.get(id=pk)
-    return HttpResponse(queryset.data)
+    return HttpResponse(tasks.cobalt_render(queryset.campaign.template, queryset.data))
 
 @login_required
 @require_http_methods(["POST"])

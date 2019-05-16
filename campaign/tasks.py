@@ -3,13 +3,27 @@ import io
 import smtplib
 import random
 import csv
+import json
 from celery import shared_task
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from campaign.models import Campaign
 from campaign.models import Mail
 
-def send_mail(mail):
+def cobalt_render(template, valjson):
+    """Render a template to the email."""
+
+    # Convert json to dict
+    values = json.loads(valjson)
+
+    # Variable substitution
+    for col in values:
+        template = template.replace('{{' + col + '}}', values[col])
+
+    return template
+
+
+def send_mail(mail, template):
     """Try to send the mail with a new connection."""
 
     # Open a new SMTP connection
@@ -17,7 +31,7 @@ def send_mail(mail):
 
     # Try to send, store error otherwise
     try:
-        print('SENT MAIL ' + str(mail.email))
+        data = cobalt_render(template, mail.data)
         #sendmail(server, self.data, self.campaign.from_email, self.email, self.campaign.subject)
         mail.success = random.randint(0, 10) > 3
         mail.error = ''
@@ -48,13 +62,8 @@ def process_campaign(cid):
         except ValidationError:
             continue
 
-        # Put in values
-        body = str(camp.template)
-        for col in row:
-            body = body.replace('{{' + col + '}}', row[col])
-
         # Create object
-        Mail.objects.create(campaign=camp, email=row['email'], data=body)
+        Mail.objects.create(campaign=camp, email=row['email'], data=json.dumps(row))
 
     camp.processing = False
     camp.save()
@@ -65,9 +74,8 @@ def send_campaign(cid):
 
     camp = Campaign.objects.get(id=cid)
 
-    for mail in camp.mails.all():
-        if not mail.success:
-            send_mail(mail)
+    for mail in camp.mails.filter(success=False):
+        send_mail(mail, camp.template)
 
     camp.in_progress = False
     camp.completed = True
