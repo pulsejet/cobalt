@@ -97,3 +97,14 @@ function openFile(input) {
     reader.readAsText(input.files[0]);
     $('#csvname').text(input.files[0].name);
 };
+
+function openCampAuth(id, name) {
+    $('#authform').attr('action', `send/${id}}`);
+    $('#auth-camp-name').text(name);
+}
+
+$(document).keypress(function(e) {
+    if ($("#authModal").hasClass('show') && (e.keycode == 13 || e.which == 13)) {
+        $('#authform').trigger('submit')
+    }
+});

@@ -8,6 +8,7 @@ from django.views.decorators.http import require_http_methods
 import campaign.tasks as tasks
 from campaign.models import Campaign, Mail
 from campaign.forms import NewCampaignForm
+from campaign.mail import test_auth
 
 @login_required
 def mail(request, form=None):
@@ -46,6 +47,14 @@ def annotate_campaign_progress(camp):
 @login_required
 @require_http_methods(["POST"])
 def start_send(request, pk):
+    """Start sending a campaign."""
+
+    username = request.POST['username']
+    password = request.POST['password']
+    print(username, password)
+    if not test_auth('smtp-auth.iitb.ac.in', 25, username, password):
+        return HttpResponse("Authentication failed!", status=401)
+
     camp = Campaign.objects.get(id=pk)
     if not camp.in_progress:
         camp.in_progress = True

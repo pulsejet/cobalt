@@ -75,10 +75,10 @@ def send_campaign(cid):
     """Send mails from a campaign."""
 
     camp = Campaign.objects.get(id=cid)
-
-    for mail in camp.mails.filter(success=False):
-        send_mail(mail, camp.template)
-
-    camp.in_progress = False
-    camp.completed = True
-    camp.save()
+    try:
+        for mail in camp.mails.filter(success=False):
+            send_mail(mail, camp.template)
+    finally:
+        camp.in_progress = False
+        camp.completed = True
+        camp.save()

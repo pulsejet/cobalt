@@ -29,3 +29,16 @@ def sendmail(server, body, addr_from, addr_to, subject):
     msg['To'] = addr_to
 
     server.sendmail(addr_from, [addr_to], msg.as_string())
+
+def test_auth(server, ip, username, password):
+    """Test if authentication succeeds."""
+
+    conn = None
+    try:
+        conn = get_connection(server, ip, username, password)
+        return True
+    except smtplib.SMTPException as smtp_exception:
+        return False
+    finally:
+        if conn:
+            close_connection(conn)

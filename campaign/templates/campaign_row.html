@@ -28,10 +28,11 @@
 </td>
 <td>{{ camp.num_mails }} ({{ camp.num_sent }})</td>
 <td>
-    <form class="fbtn" action="send/{{ camp.id }}" method="POST">
-        {% csrf_token %}
-        <input class="btn btn-success" type="submit" value="Send" {% if camp.processing or camp.in_progress %} disabled {% endif %}>
-    </form>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#authModal"
+        {% if camp.processing or camp.in_progress %} disabled {% endif %}
+        onclick='openCampAuth("{{ camp.id }}", "{{ camp.name }}")'>
+        Send
+    </button>
     <a class="btn btn-primary" href="campaign/{{ camp.id }}">View</a>
     <form class="fbtn" action="del-campaign/{{ camp.id }}" method="POST">
         {% csrf_token %}
