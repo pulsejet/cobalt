@@ -1,3 +1,4 @@
+import sys
 from django.conf import settings
 from django.db.models import Count
 from django.db.models import Q
@@ -9,6 +10,16 @@ import campaign.tasks as tasks
 from campaign.models import Campaign, Mail
 from campaign.forms import NewCampaignForm
 from campaign.mail import test_auth
+
+def custom_500(request):
+    """Custom internal server error page."""
+    value = sys.exc_info()[1]
+    return error(request, value)
+
+def error(request, message, status=400):
+    """Return an error."""
+    context = {"error": str(message), "settings": settings}
+    return render(request, 'error.html', context=context, status=status)
 
 @login_required
 def mail(request, form=None):
@@ -29,7 +40,7 @@ def campaign_row(request, pk):
     camp = queryset.first()
 
     if not camp:
-        return HttpResponse('Not Found', status=404)
+        return error(request, '404 Not Found')
 
     annotate_campaign_progress(camp)
     context = {"camp": camp}
@@ -57,8 +68,7 @@ def start_send(request, pk):
     password = request.POST['password']
     auth_err = test_auth(settings.SMTP_SERVER, settings.SMTP_PORT, username, password)
     if auth_err:
-        context = {"error": auth_err, "settings": settings}
-        return render(request, 'error.html', context=context, status=401)
+        return error(request, auth_err, 401)
 
     camp = Campaign.objects.get(id=pk, created_by=request.user)
     if not camp.in_progress:
@@ -67,7 +77,7 @@ def start_send(request, pk):
         tasks.send_campaign.delay(camp.id, username, password)
         return HttpResponseRedirect(reverse('default'))
 
-    return HttpResponse("Job in progress!")
+    return error(request, 'Cannot start a job currently in progress', 401)
 
 @login_required
 @require_http_methods(["POST"])

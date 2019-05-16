@@ -19,6 +19,7 @@ from django.urls import path
 import campaign.views as mail_views
 
 admin.site.site_header = 'Cobalt Admin'
+handler500 = 'campaign.views.custom_500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
