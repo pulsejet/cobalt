@@ -1,3 +1,15 @@
+a.header, a.header * {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-family: monospace;
+}
+a.header::hover { text-decoration: none; }
+a.header {
+    width: 100%;
+    text-align: center;
+}
+
 .camp-table {
     width: 100%;
     overflow-x: auto;
