@@ -19,6 +19,10 @@ td, th {
     display: inline-block;
 }
 
+#csvfile {
+    display: none;
+}
+
 .spinner {
     animation: spin 1s infinite linear;
 }
@@ -35,4 +39,43 @@ td, th {
 @keyframes spin {
     from {transform:rotate(0deg);}
     to {transform:rotate(-360deg);}
+}
+
+/* Box css */
+.box {
+    font-size: 1.25rem; /* 20 */
+    background-color: #fafafa;
+    position: relative;
+    padding: 40px 20px;
+    cursor: pointer;
+}
+
+.box * {
+    cursor: pointer;
+}
+
+.box label {
+    width: 100%;
+    text-align: center;
+}
+
+.box.has-advanced-upload {
+    outline: 2px dashed #aaa;
+    outline-offset: -8px;
+
+    -webkit-transition: background-color .15s linear;
+    transition: background-color .15s linear;
+}
+
+.box.is-dragover {
+    outline-color: #bbb;
+    background-color: #fff;
+}
+
+.box__dragndrop {
+    display: none;
+}
+
+.box.has-advanced-upload .box__dragndrop {
+    display: inline;
 }

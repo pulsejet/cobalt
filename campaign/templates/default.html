@@ -40,9 +40,11 @@
                     <input name="subject" type="text" class="form-control" id="subject">
                 </div>
 
-                <div class="form-group">
-                    <label for="csvfile">CSV File</label>
-                    <input name="csv" type="file" class="form-control-file" id="csvfile" onchange='openFile(event)'>
+                <div class="form-group box">
+                    <div class="box__input">
+                        <label id="csvname" for="csvfile">Drag or click to choose CSV file</label>
+                        <input name="csv" type="file" class="form-control-file" id="csvfile" onchange="openFile(event.target)">
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -139,8 +141,7 @@
                 editor.insertText(editor.getSelection().index, `{{${variable}}}`);
             }
 
-            var openFile = function(event) {
-                var input = event.target;
+            var openFile = function(input) {
                 var reader = new FileReader();
                 reader.onload = function(){
                     csventry = ($.csv.toObjects(reader.result))[0];
@@ -155,8 +156,11 @@
                     textChange();
                 };
                 reader.readAsText(input.files[0]);
+                $('#csvname').text(input.files[0].name);
             };
             // {% endverbatim %}
         </script>
+
+        <script src='{% static "mail/dragdrop.js" %}' crossorigin="anonymous"></script>
     </body>
 </html>
