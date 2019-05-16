@@ -23,9 +23,19 @@ var emailVariable = '';
 function preprocessHTML(html) {
     html = $.parseHTML(html)
     $(html).find('br').remove();
-    html = html.map(m => m.innerHTML).join('<br>');
-    html = `<p style="white-space:pre">${html}</p>`
-    return html
+    let processed = '';
+    for (var i = 0; i < html.length; i++) {
+        if (html[i].tagName.toLowerCase() === 'p') {
+            processed += html[i].innerHTML;
+            if (i < html.length - 1 && html[i+1].tagName.toLowerCase() === 'p') {
+                processed += '<br>';
+            }
+        } else {
+            processed += html[i].outerHTML;
+        }
+    }
+    processed = `<div style="white-space:pre">${processed}</div>`
+    return processed
 }
 
 function textChange() {
