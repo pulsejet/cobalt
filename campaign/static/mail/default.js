@@ -108,3 +108,11 @@ $(document).keypress(function(e) {
         $('#authform').trigger('submit')
     }
 });
+
+$('#authModal').on('shown.bs.modal', function () {
+    if ($('#auth-username').val() == '') {
+        $('#auth-username').focus();
+    } else {
+        $('#auth-password').focus();
+    }
+})

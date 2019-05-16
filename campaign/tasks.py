@@ -1,14 +1,17 @@
 from __future__ import absolute_import, unicode_literals
 import io
 import smtplib
-import random
 import csv
 import json
 from celery import shared_task
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.conf import settings
 from campaign.models import Campaign
 from campaign.models import Mail
+from campaign.mail import get_connection
+from campaign.mail import close_connection
+from campaign.mail import sendmail
 
 def cobalt_render(template, valjson):
     """Render a template to the email."""
@@ -23,23 +26,17 @@ def cobalt_render(template, valjson):
     return template
 
 
-def send_mail(mail, template):
-    """Try to send the mail with a new connection."""
-
-    # Open a new SMTP connection
-    #server = get_connection('smtp-auth.iitb.ac.in', 25, 'mlc', '')
+def send_mail(server, mail):
+    """Try to send the mail with a connection."""
 
     # Try to send, store error otherwise
     try:
-        data = cobalt_render(template, mail.data)
+        data = cobalt_render(mail.campaign.template, mail.data)
         #sendmail(server, self.data, self.campaign.from_email, self.email, self.campaign.subject)
-        mail.success = random.randint(0, 10) > 3
+        mail.success = True
         mail.error = ''
     except smtplib.SMTPException as smtp_exception:
         mail.error = str(smtp_exception)
-
-    # Close the connection
-    #close_connection(server)
 
     # Increment try count and save
     mail.try_count += 1
@@ -71,14 +68,25 @@ def process_campaign(cid):
     camp.save()
 
 @shared_task
-def send_campaign(cid):
+def send_campaign(cid, user, passw):
     """Send mails from a campaign."""
 
+    # Open a new SMTP connection
+    try:
+        server = get_connection(settings.SMTP_SERVER, settings.SMTP_PORT, user, passw)
+    except smtplib.SMTPException:
+        return
+
+    # Get the campaign
     camp = Campaign.objects.get(id=cid)
+
+    # Send all remaining emails
     try:
         for mail in camp.mails.filter(success=False):
-            send_mail(mail, camp.template)
+            send_mail(server, mail)
     finally:
+        # Clean up and mark done
+        close_connection(server)
         camp.in_progress = False
         camp.completed = True
         camp.save()

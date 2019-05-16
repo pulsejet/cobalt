@@ -123,3 +123,5 @@ SITE_HEADER = "SDF"
 STATIC_URL = '/static/'
 MEDIA_ROOT = 'uploaded'
 BASE_URL = '/'
+SMTP_SERVER = 'smtp-auth.iitb.ac.in'
+SMTP_PORT = 25

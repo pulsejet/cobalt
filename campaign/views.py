@@ -3,6 +3,7 @@ from django.db.models import Count
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.conf import settings
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse
 from django.views.decorators.http import require_http_methods
 import campaign.tasks as tasks
@@ -51,15 +52,14 @@ def start_send(request, pk):
 
     username = request.POST['username']
     password = request.POST['password']
-    print(username, password)
-    if not test_auth('smtp-auth.iitb.ac.in', 25, username, password):
+    if not test_auth(settings.SMTP_SERVER, settings.SMTP_PORT, username, password):
         return HttpResponse("Authentication failed!", status=401)
 
     camp = Campaign.objects.get(id=pk)
     if not camp.in_progress:
         camp.in_progress = True
         camp.save()
-        tasks.send_campaign.delay(camp.id)
+        tasks.send_campaign.delay(camp.id, username, password)
         return HttpResponseRedirect(reverse('default'))
 
     return HttpResponse("Job in progress!")

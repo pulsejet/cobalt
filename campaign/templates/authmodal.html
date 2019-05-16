@@ -8,7 +8,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <p>Enter credentials for <b>smtp-auth.iitb.ac.in</b></p>
+            <p>Enter credentials for <b>{{ settings.SMTP_SERVER }}:{{ settings.SMTP_PORT }}</b></p>
             <form id="authform" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
