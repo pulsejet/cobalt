@@ -55,8 +55,10 @@ def start_send(request, pk):
 
     username = request.POST['username']
     password = request.POST['password']
-    if not test_auth(settings.SMTP_SERVER, settings.SMTP_PORT, username, password):
-        return HttpResponse("Authentication failed!", status=401)
+    auth_err = test_auth(settings.SMTP_SERVER, settings.SMTP_PORT, username, password)
+    if auth_err:
+        context = {"error": auth_err, "settings": settings}
+        return render(request, 'error.html', context=context, status=401)
 
     camp = Campaign.objects.get(id=pk, created_by=request.user)
     if not camp.in_progress:

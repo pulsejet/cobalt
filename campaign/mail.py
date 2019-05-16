@@ -36,6 +36,6 @@ def test_auth(server, ip, username, password):
     try:
         conn = get_connection(server, ip, username, password)
         close_connection(conn)
-        return True
+        return None
     except smtplib.SMTPException as smtp_exception:
-        return False
+        return str(smtp_exception)

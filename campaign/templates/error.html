@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <style>
+        .msg {
+            font-size: 1.15em;
+            font-family: monospace;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+
+    <h1> Uh oh, there was some problem </h1>
+    Here is what I know: <br/>
+    <p class="msg">
+        <span>{{ error }}</span>
+    </p>
+{% endblock %}
