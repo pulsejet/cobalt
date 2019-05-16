@@ -1,6 +1,5 @@
 var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
@@ -21,19 +20,31 @@ var editor = new Quill('.editor', options);
 var csventry = {};
 var emailVariable = '';
 
+function preprocessHTML(html) {
+    html = $.parseHTML(html)
+    $(html).find('br').remove();
+    html = html.map(m => m.innerHTML).join('<br>');
+    html = `<p style="white-space:pre">${html}</p>`
+    return html
+}
+
 function textChange() {
-    var html = editor.root.innerHTML;
+    var html = preprocessHTML(editor.root.innerHTML);
+
+    // Copy into form
+    var html_copy = (' ' + html).slice(1);
+    $('#template').val(html_copy);
+
+    // Do variable substitution
     for (var key in csventry) {
         if (csventry.hasOwnProperty(key)) {
             var re = new RegExp(`{{${key}}}`, 'g');
             html = html.replace(re, csventry[key]);
         }
     }
-    styles = `<style> li, p { white-space: pre-wrap; margin: 0; padding: 0; }
-    ol, ul { margin-top: 0; margin-bottom:0 } </style>`;
 
-    $('#tpreview').html(styles + html);
-    $('#template').val(styles + editor.root.innerHTML);
+    // Show the preview
+    $('#tpreview').html(html);
 }
 
 editor.on('text-change', function(delta, oldDelta, source) {
