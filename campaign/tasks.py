@@ -3,6 +3,7 @@ import io
 import smtplib
 import csv
 import json
+import chardet
 from celery import shared_task
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -48,10 +49,22 @@ def process_campaign(cid):
 
     camp = Campaign.objects.get(id=cid)
 
-    data = camp.csv.read().decode('utf-8')
+    # Read raw bytes
+    data = camp.csv.read()
+
+    # Detect encoding and decode
+    encoding = chardet.detect(data)
+    if 'encoding' in encoding:
+        encoding = encoding['encoding']
+    else:
+        encoding = 'utf-8'
+    data = data.decode(encoding)
+
+    # Get rows of data
     rows = list(csv.DictReader(io.StringIO(data)))
     emvar = camp.email_variable
 
+    # Create record for each row
     for row in rows:
         # Check validity of email
         if emvar not in row or not row[emvar]:
