@@ -8,11 +8,17 @@ a.header, a.header * {
     color: black;
     font-weight: bold;
     font-family: monospace;
+    white-space: nowrap;
 }
 a.header::hover { text-decoration: none; }
 a.header {
     width: 100%;
     text-align: center;
+}
+@media (max-width: 600px) {
+    a.header, a.header * {
+        font-size: 1.4em;
+    }
 }
 
 .footer {
