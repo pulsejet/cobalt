@@ -12,6 +12,7 @@
     <td>{{ m.try_count }}</td>
     <td>{{ m.error }}</td>
     <td>
-        <a class="btn btn-primary" target="_blank" href="preview/{{m.id}}">Preview</a>
+        <button class="btn btn-primary"
+                onclick='showPreview("{{m.id}}")'>Preview</button>
     </td>
 </tr>
