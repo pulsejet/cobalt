@@ -3,7 +3,6 @@ from django.db.models import Count
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from django.conf import settings
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse
 from django.views.decorators.http import require_http_methods
 import campaign.tasks as tasks
@@ -13,7 +12,7 @@ from campaign.mail import test_auth
 
 @login_required
 def mail(request, form=None):
-    queryset = Campaign.objects.all().order_by('-time_of_creation')
+    queryset = Campaign.objects.filter(created_by=request.user).order_by('-time_of_creation')
     queryset = annotate_campaign_queryset(queryset)
 
     for camp in queryset:
@@ -25,9 +24,13 @@ def mail(request, form=None):
 @login_required
 def campaign_row(request, pk):
     """Single row of campaign HTML."""
-    queryset = Campaign.objects.filter(id=pk)
+    queryset = Campaign.objects.filter(id=pk, created_by=request.user)
     queryset = annotate_campaign_queryset(queryset)
     camp = queryset.first()
+
+    if not camp:
+        return HttpResponse('Not Found', status=404)
+
     annotate_campaign_progress(camp)
     context = {"camp": camp}
     return render(request, 'campaign_row.html', context=context)
@@ -55,7 +58,7 @@ def start_send(request, pk):
     if not test_auth(settings.SMTP_SERVER, settings.SMTP_PORT, username, password):
         return HttpResponse("Authentication failed!", status=401)
 
-    camp = Campaign.objects.get(id=pk)
+    camp = Campaign.objects.get(id=pk, created_by=request.user)
     if not camp.in_progress:
         camp.in_progress = True
         camp.save()
@@ -78,7 +81,7 @@ def campaign(request):
         # Create new campaign
         camp = Campaign.objects.create(
             name=name, from_email=from_email, template=template, subject=subject,
-            csv=request.FILES['csv'], email_variable=emailvar)
+            csv=request.FILES['csv'], email_variable=emailvar, created_by=request.user)
         tasks.process_campaign.delay(camp.id)
     else:
         return mail(request, form=form)
@@ -87,19 +90,19 @@ def campaign(request):
 
 @login_required
 def campaign_view(request, pk):
-    queryset = Campaign.objects.get(id=pk)
+    queryset = Campaign.objects.get(id=pk, created_by=request.user)
     context = {"campaign": queryset, "settings": settings}
     return render(request, 'campaign.html', context=context)
 
 @login_required
 def preview(request, pk):
-    queryset = Mail.objects.get(id=pk)
+    queryset = Mail.objects.get(id=pk, campaign__created_by=request.user)
     return HttpResponse(tasks.cobalt_render(queryset.campaign.template, queryset.data))
 
 @login_required
 @require_http_methods(["POST"])
 def campaign_del(request, pk):
-    queryset = Campaign.objects.get(id=pk)
+    queryset = Campaign.objects.get(id=pk, created_by=request.user)
     queryset.delete()
     return HttpResponseRedirect(reverse('default'))
 

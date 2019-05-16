@@ -1,15 +1,14 @@
 """Models for bulk mails!"""
 import uuid
 from django.db import models
-# from campaign.mail import sendmail
-# from campaign.mail import get_connection
-# from campaign.mail import close_connection
+from django.contrib.auth.models import User
 
 class Campaign(models.Model):
     """A single campaign that may contain multiple email."""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     time_of_creation = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True, null=True)
