@@ -1,0 +1,18 @@
+{% load static %}
+
+<tr>
+    <td>{{ m.email }}</td>
+    <td>
+        {% if m.success %}
+            <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
+        {% else %}
+            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
+        {% endif %}
+    </td>
+    <td>{{ m.try_count }}</td>
+    <td>{{ m.error }}</td>
+    <td>
+        <button class="btn btn-primary"
+                onclick='showPreview("{{m.id}}")'>Preview</button>
+    </td>
+</tr>

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        {% load static %}
+        <title>Cobalt</title>
+        <base href="{{ settings.BASE_URL }}" />
+
+        <script src='{% static "mail/jquery-3.3.1.slim.min.js" %}' crossorigin="anonymous"></script>
+        <script src='{% static "mail/popper.min.js" %}' crossorigin="anonymous"></script>
+        <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' crossorigin="anonymous">
+        <link rel="stylesheet" href='{% static "mail/custom.css" %}' crossorigin="anonymous">
+        <script src='{% static "mail/bootstrap.min.js" %}' crossorigin="anonymous"></script>
+        <script src='{% static "mail/jquery.csv.min.js" %}' crossorigin="anonymous"></script>
+        <script src='{% static "mail/quill.min.js" %}' crossorigin="anonymous"></script>
+        <link rel="stylesheet" href='{% static "mail/quill.snow.css" %}' crossorigin="anonymous">
+    </head>
+    <body>
+        <div id="outerdiv">
+            <div id="maindiv">
+                <a class="header" href="{{ settings.BASE_URL }}"><h1> --- Cobalt --- </h1></a>
+
+                {% block content %}
+                {% endblock %}
+            </div>
+
+            {% include "footer.html" %}
+        </div>
+    </body>
+</html>

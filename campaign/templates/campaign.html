@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h3>{{ campaign.name }}</h3>
+    <h5>{{ campaign.subject }}</h5>
+
+    <div class="camp-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Sent</th>
+                    <th>Try Count</th>
+                    <th>Error</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for m in campaign.mails.all %}
+                {% include "mail_row.html" with m=m %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% include "previewmodal.html" %}
+
+    <script>
+        function showPreview(id) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function() {
+                $('#previewModal .modal-body').html(this.responseText);
+                $('#previewModal').modal('show');
+            }
+            xhr.open("GET", `preview/${id}`);
+            xhr.responseType = "text";
+            xhr.send();
+        }
+    </script>
+
+{% endblock %}

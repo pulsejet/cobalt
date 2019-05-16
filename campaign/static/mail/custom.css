@@ -1,0 +1,148 @@
+body {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #fcfcfc;
+}
+
+#maindiv {
+    margin: 30px;
+    margin-bottom: 0;
+}
+
+#outerdiv {
+    min-height: calc(100vh - 60px);
+    position: relative;
+    padding-bottom: 60px;
+}
+
+a.header, a.header * {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-family: monospace;
+    white-space: nowrap;
+}
+a.header::hover { text-decoration: none; }
+a.header {
+    width: 100%;
+    text-align: center;
+}
+@media (max-width: 600px) {
+    a.header, a.header * {
+        font-size: 1.4em;
+    }
+}
+
+.footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.footer * {
+    margin-bottom: 0;
+}
+
+.camp-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.camp-table table {
+    min-width: 1000px;
+    margin-top: 20px;
+    border: 2px solid #eee;
+    background-color: white;
+}
+
+.tick {
+    height: 25px;
+}
+
+th {
+    background-color: black;
+    color: white;
+}
+
+td, th {
+    text-align: center;
+}
+
+.fbtn {
+    display: inline-block;
+}
+
+.varbtn {
+    margin-top: 4px;
+}
+
+#csvfile {
+    display: none;
+}
+
+.spinner {
+    animation: spin 1s infinite linear;
+}
+
+#tpreview {
+    padding: 10px;
+    border: 2px solid #ddd;
+}
+
+#variables {
+    font-family: monospace;
+}
+
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(-360deg);}
+}
+
+/* Quilljs */
+.ql-editor{
+    min-height:150px;
+}
+
+#tpreview {
+    min-height: 50px;
+    margin-bottom: 20px;
+}
+
+/* Box css */
+.box {
+    font-size: 1.25rem; /* 20 */
+    background-color: #f4f4f4;
+    position: relative;
+    padding: 40px 20px;
+    cursor: pointer;
+}
+
+.box * {
+    cursor: pointer;
+}
+
+.box label {
+    width: 100%;
+    text-align: center;
+}
+
+.box.has-advanced-upload {
+    outline: 2px dashed #aaa;
+    outline-offset: -8px;
+
+    -webkit-transition: background-color .15s linear;
+    transition: background-color .15s linear;
+}
+
+.box.is-dragover {
+    outline-color: #bbb;
+    background-color: #fff;
+}
+
+.box__dragndrop {
+    display: none;
+}
+
+.box.has-advanced-upload .box__dragndrop {
+    display: inline;
+}
