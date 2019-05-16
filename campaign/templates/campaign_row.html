@@ -43,7 +43,7 @@
 {% if camp.processing or camp.in_progress %}
 <script>
     setTimeout(function() {
-        const url = '/campaign-row/{{camp.id}}';
+        const url = 'campaign-row/{{camp.id}}';
         console.log('Refreshing {{ camp.name }}');
         var xhr = new XMLHttpRequest();
         xhr.onload = function() {
