@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models import Count
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -15,7 +16,7 @@ def mail(request, form=None):
     for camp in queryset:
         annotate_campaign_progress(camp)
 
-    context = {"campaigns": queryset, "form": form}
+    context = {"campaigns": queryset, "form": form, "settings": settings}
     return render(request, 'default.html', context=context)
 
 @login_required
@@ -75,7 +76,7 @@ def campaign(request):
 @login_required
 def campaign_view(request, pk):
     queryset = Campaign.objects.get(id=pk)
-    context = {"campaign": queryset}
+    context = {"campaign": queryset, "settings": settings}
     return render(request, 'campaign.html', context=context)
 
 @login_required

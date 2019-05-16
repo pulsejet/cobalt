@@ -3,6 +3,8 @@
     <head>
         {% load static %}
         <title>Cobalt</title>
+        <base href="{{ settings.BASE_URL }}" />
+
         <script src='{% static "mail/jquery-3.3.1.slim.min.js" %}' crossorigin="anonymous"></script>
         <script src='{% static "mail/popper.min.js" %}' crossorigin="anonymous"></script>
         <link rel="stylesheet" href='{% static "mail/bootstrap.min.css" %}' crossorigin="anonymous">
@@ -11,7 +13,7 @@
     </head>
     <body>
         <div style="margin: 30px">
-            <a class="header" href="/"><h1> --- Cobalt --- </h1></a>
+            <a class="header" href="{{ settings.BASE_URL }}"><h1> --- Cobalt --- </h1></a>
             <h3>{{ campaign.name }}</h3>
             <h5>{{ campaign.subject }}</h5>
         </div>
