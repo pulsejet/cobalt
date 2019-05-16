@@ -1,3 +1,7 @@
+body {
+    overflow-y: scroll;
+}
+
 a.header, a.header * {
     text-decoration: none;
     color: black;
@@ -8,6 +12,14 @@ a.header::hover { text-decoration: none; }
 a.header {
     width: 100%;
     text-align: center;
+}
+
+.footer {
+    margin-top: 20px;
+}
+
+.footer * {
+    margin-bottom: 0;
 }
 
 .camp-table {
