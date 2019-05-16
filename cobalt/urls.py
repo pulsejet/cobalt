@@ -18,6 +18,8 @@ from django.contrib.auth.views import LoginView
 from django.urls import path
 import campaign.views as mail_views
 
+admin.site.site_header = 'Cobalt Admin'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', mail_views.mail, name='default'),
@@ -27,6 +29,6 @@ urlpatterns = [
     path('campaign/<pk>', mail_views.campaign_view),
     path('del-campaign/<pk>', mail_views.campaign_del),
     path('preview/<pk>', mail_views.preview),
-    path('accounts/login/', LoginView.as_view(template_name='admin/login.html')),
+    path('accounts/login/', LoginView.as_view(template_name='login.html')),
     path('signout', mail_views.cobalt_logout),
 ]

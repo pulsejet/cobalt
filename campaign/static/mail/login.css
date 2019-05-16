@@ -1,0 +1,41 @@
+body {
+    background-color: #fcfcfc;
+}
+
+#content-main {
+    margin: 0 auto;
+    width: 400px;
+    max-width: 100%;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.errornote {
+    color: red;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type=submit] {
+    font-weight: bold;
+    margin-top: 3px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
