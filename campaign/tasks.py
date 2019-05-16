@@ -32,7 +32,7 @@ def send_mail(server, mail):
     # Try to send, store error otherwise
     try:
         data = cobalt_render(mail.campaign.template, mail.data)
-        #sendmail(server, self.data, self.campaign.from_email, self.email, self.campaign.subject)
+        sendmail(server, data, mail.campaign.from_email, mail.email, mail.campaign.subject)
         mail.success = True
         mail.error = ''
     except smtplib.SMTPException as smtp_exception:
