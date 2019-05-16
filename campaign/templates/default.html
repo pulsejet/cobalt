@@ -148,7 +148,7 @@
                     html = '';
 
                     for (var key in csventry) {
-                        html += `<button class='btn' onclick="addvar('${key}', event)">${key}</button>\n`
+                        html += `<button class='btn varbtn' onclick="addvar('${key}', event)">${key}</button>\n`
                     }
 
                     $('#variables').html(html);

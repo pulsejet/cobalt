@@ -19,6 +19,10 @@ td, th {
     display: inline-block;
 }
 
+.varbtn {
+    margin-top: 4px;
+}
+
 #csvfile {
     display: none;
 }
@@ -28,7 +32,7 @@ td, th {
 }
 
 #tpreview {
-    margin: 10px;
+    padding: 10px;
     border: 2px solid gray;
 }
 
