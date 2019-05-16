@@ -109,6 +109,18 @@ $(document).keypress(function(e) {
     }
 });
 
+/* Store username for convinience */
+$('#authform').on('submit', function() {
+    localStorage.setItem('username', $('#auth-username').val());
+})
+
+$('#authModal').on('show.bs.modal', function () {
+    if (localStorage.getItem('username') !== null) {
+        $('#auth-username').val(localStorage.getItem('username'));
+    }
+});
+
+/* Focus */
 $('#authModal').on('shown.bs.modal', function () {
     if ($('#auth-username').val() == '') {
         $('#auth-username').focus();
