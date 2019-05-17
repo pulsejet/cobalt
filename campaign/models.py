@@ -25,6 +25,7 @@ class Campaign(models.Model):
     mailtrack = models.BooleanField(default=True)
 
     progress = 0
+    progress_read = 0
 
     def __str__(self):
         return self.name

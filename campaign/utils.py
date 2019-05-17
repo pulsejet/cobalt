@@ -43,14 +43,14 @@ def annotate_campaign_queryset(queryset: QuerySet) -> QuerySet:
     """Set annotations of queryset."""
     queryset = queryset.annotate(num_mails=Count('mails'))
     queryset = queryset.annotate(num_sent=Count('mails', filter=Q(mails__success=True)))
+    queryset = queryset.annotate(num_read=Count('mails', filter=Q(mails__read_count__gt=0)))
     return queryset
 
 def annotate_campaign_progress(campaign: Campaign) -> None:
     """Set progess of campaign."""
-    if campaign.num_mails == 0:
-        campaign.progress = 0
-    else:
-        campaign.progress = int((campaign.num_sent / campaign.num_mails) * 100)
+    if campaign.num_mails > 0:
+        campaign.progress_read = int((campaign.num_read / campaign.num_mails) * 100)
+        campaign.progress = int((campaign.num_sent / campaign.num_mails) * 100) - campaign.progress_read
 
 def notify_campaign_created(campaign: Campaign) -> None:
     """Notify the user of campaign creation."""

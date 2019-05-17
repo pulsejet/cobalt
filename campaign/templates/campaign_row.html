@@ -7,9 +7,11 @@
         <img class="tick spinner" src='{% static "img/processing.svg" %}' alt="True"/>
     {% else %}
         <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ camp.progress_read }}"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{ camp.progress_read }}%">
+            </div>
             <div class="progress-bar" role="progressbar" aria-valuenow="{{ camp.progress }}"
                 aria-valuemin="0" aria-valuemax="100" style="width:{{ camp.progress }}%">
-                {{ camp.progress }}%
             </div>
         </div>
     {% endif %}
@@ -18,7 +20,7 @@
     {% if camp.in_progress %}
         <img class="tick spinner" src='{% static "img/processing.svg" %}' alt="True"/>
     {% elif camp.completed %}
-        {% if camp.progress == 100 %}
+        {% if camp.num_sent == camp.num_mails %}
             <img class="tick" src='{% static "img/good.svg" %}' alt="True"/>
         {% else %}
             <img class="tick" src='{% static "img/part.svg" %}' alt="True"/>
@@ -27,7 +29,7 @@
         <img class="tick" src='{% static "img/bad.svg" %}' alt="False"/>
     {% endif %}
 </td>
-<td>{{ camp.num_mails }} ({{ camp.num_sent }})</td>
+<td>{{ camp.num_mails }} ({{ camp.num_sent }}, {{ camp.num_read }})</td>
 <td>
     <img src='{% static "img/sendmail.svg" %}' class='image-button'
         title="Send"
