@@ -1,8 +1,8 @@
 """Models for bulk mails!"""
 import uuid
-import datetime
 from django.db import models
 from django.contrib.auth.models import User
+from renderer import get_log_mail
 
 class Campaign(models.Model):
     """A single campaign that may contain multiple email."""
@@ -61,14 +61,7 @@ class MailSentLog(models.Model):
     def log(mail: Mail, rendered: str) -> None:
         """Log using a Mail object and rendered mail."""
 
-        data = '''\
-<pre>
-Subject: %s
-From: %s
-Timestamp: %s
-</pre>
-
-%s''' % (mail.campaign.subject, mail.campaign.from_email, str(datetime.datetime.now()), rendered)
+        data = get_log_mail(mail, rendered)
 
         MailSentLog.objects.create(
             username=mail.campaign.created_by.username, campaign_name=mail.campaign.name,

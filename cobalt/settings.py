@@ -125,3 +125,7 @@ MEDIA_ROOT = 'uploaded'
 BASE_URL = '/'
 SMTP_SERVER = 'smtp-auth.iitb.ac.in'
 SMTP_PORT = 25
+
+COBALT_EMAIL = 'Cobalt <noreply@iitb.ac.in>'
+COBALT_USER = ''
+COBALT_PASS = ''

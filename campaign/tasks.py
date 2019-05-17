@@ -16,6 +16,7 @@ from campaign.models import Mail
 from campaign.mail import get_connection
 from campaign.mail import close_connection
 from campaign.utils import send_mail_object
+from campaign.utils import notify_campaign_created
 
 @shared_task
 def process_campaign(cid: str) -> None:
@@ -53,6 +54,8 @@ def process_campaign(cid: str) -> None:
 
     camp.processing = False
     camp.save()
+
+    notify_campaign_created(camp)
 
 @shared_task
 def send_campaign(cid: str, username: str, password: str) -> None:
