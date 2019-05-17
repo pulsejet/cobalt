@@ -10,6 +10,7 @@ from django.core.validators import validate_email
 from django.conf import settings
 from campaign.models import Campaign
 from campaign.models import Mail
+from campaign.models import MailSentLog
 from campaign.mail import get_connection
 from campaign.mail import close_connection
 from campaign.mail import sendmail
@@ -34,6 +35,7 @@ def send_mail(server, mail):
     try:
         data = cobalt_render(mail.campaign.template, mail.data)
         sendmail(server, data, mail.campaign.from_email, mail.email, mail.campaign.subject)
+        MailSentLog.log(mail, data)
         mail.success = True
         mail.error = ''
     except smtplib.SMTPException as smtp_exception:
