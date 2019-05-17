@@ -57,28 +57,22 @@ function textChange() {
     $('#tpreview').html(html);
 }
 
-editor.on('text-change', function(delta, oldDelta, source) {
+editor.on('text-change', function() {
     textChange();
 });
-
-function addvar(variable, event) {
-    event.preventDefault();
-    if (!editor.getSelection()) editor.setSelection(0);
-    editor.insertText(editor.getSelection().index, `{{${variable}}}`);
-}
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
-function emvar(key, event) {
-    event.preventDefault();
+function addvar(variable) {
+    if (!editor.getSelection()) editor.setSelection(0);
+    editor.insertText(editor.getSelection().index, `{{${variable}}}`);
+}
+
+function emvar(key) {
     emailVariable = key;
-    $('.emvarbtn').each(function() {
-        $(this).removeClass('btn-primary');
-    })
-    $(event.target).addClass('btn-primary');
     $('#emailvar').val(key);
 }
 
@@ -95,9 +89,9 @@ function openFile(input) {
 
         /* Iterate all keys */
         for (var key in csventry) {
-            html += `<button class='btn varbtn' onclick="addvar('${key}', event)">${key}</button>\n`
+            html += `<button class="btn var-btn add" data-cobalt-key="${key}">${key}</button>\n`
             if (validateEmail(csventry[key])) {
-                emailHtml += `<button class='btn varbtn emvarbtn' onclick="emvar('${key}', event)">${key}</button>\n`
+                emailHtml += `<button class='btn var-btn email' data-cobalt-key="${key}">${key}</button>\n`
                 foundEmail = true;
             }
         }
@@ -106,13 +100,27 @@ function openFile(input) {
         $('#variables').html(html);
         $('#email-variables').html(emailHtml);
 
+        /* Setup event listeners */
+        $('.var-btn.add').on('click', function(event) {
+            event.preventDefault();
+            addvar($(this).attr('data-cobalt-key'));
+        });
+
+        $('.var-btn.email').on('click', function(event) {
+            event.preventDefault();
+            emvar($(this).attr('data-cobalt-key'));
+            $('.var-btn.email').each(function() {
+                $(this).removeClass('btn-primary');
+            })
+            $(event.target).addClass('btn-primary');
+        });
+
         /* Trigger change in email field */
         if (foundEmail) {
-            $('.emvarbtn:first').trigger('click');
+            $('.var-btn.email:first').trigger('click');
         } else {
             alert('No valid emails found in first record! This will not work!');
         }
-        console.log(csventry);
         textChange();
     };
     reader.readAsText(input.files[0]);
