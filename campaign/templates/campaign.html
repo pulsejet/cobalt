@@ -25,19 +25,6 @@
         </table>
     </div>
 
-    {% include "previewmodal.html" %}
-
-    <script>
-        function showPreview(id) {
-            var xhr = new XMLHttpRequest();
-            xhr.onload = function() {
-                $('#previewModal .modal-body').html(this.responseText);
-                $('#previewModal').modal('show');
-            }
-            xhr.open("GET", `preview/${id}`);
-            xhr.responseType = "text";
-            xhr.send();
-        }
-    </script>
+    {% include "modal_preview.html" %}
 
 {% endblock %}

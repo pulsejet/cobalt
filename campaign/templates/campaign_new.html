@@ -1,0 +1,65 @@
+{% load static %}
+
+{% if form and form.errors %}
+    {% for error, val in form.errors.items %}
+        <div class="alert alert-danger">
+            <strong>{{ error }} {{ val }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form action="campaign" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name">Campaign Name:</label>
+        <input name="name" type="text" class="form-control" id="name">
+    </div>
+
+    <div class="form-group">
+        <label for="from_email">From E-Mail (format - <b>Your Name &lt;user@site.com&gt;</b>):</label>
+        <input name="from_email" type="text" class="form-control" id="from_email"
+                value="{{ request.user.first_name }} {{ request.user.last_name }} <{{ request.user.email }}>">
+    </div>
+
+    <div class="form-group">
+        <label for="subject">Subject:</label>
+        <input name="subject" type="text" class="form-control" id="subject">
+    </div>
+
+    <div class="form-group box">
+        <div class="box__input">
+            <label id="csvname" for="csvfile">Drag or click to choose CSV file</label>
+            <input name="csv" type="file" class="form-control-file" id="csvfile" onchange="openFile(event.target)">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="editor">Available Variables:</label>
+        <div id="variables"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="editor">Email Variable:</label>
+        <div id="email-variables"></div>
+        <input name="emailvar" type="text" class="form-control" id="emailvar" hidden>
+    </div>
+
+    <div class="form-group">
+        <label for="editor">Template:</label>
+        <div class="editor" id="editor"></div>
+    </div>
+
+    <div class="form-group" style="display: none">
+        <textarea name="template" class="form-control" rows="5" id="template"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="tpreview">Preview:</label>
+        <div id="tpreview"></div>
+    </div>
+
+    {% csrf_token %}
+    <input class="btn btn-success" type="submit" value="Create">
+</form>
+
+<script src='{% static "js/campaign-new.js" %}'></script>
+<script src='{% static "js/dragdrop.js" %}'></script>

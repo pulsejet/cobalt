@@ -1,0 +1,21 @@
+<div class="camp-table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Campaign Name</th>
+                <th>From E-Mail</th>
+                <th>Progress</th>
+                <th>Completed</th>
+                <th>Count (Sent)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for camp in campaigns %}
+            <tr id="camp-{{camp.id}}">
+                {% include "campaign_row.html" with camp=camp %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

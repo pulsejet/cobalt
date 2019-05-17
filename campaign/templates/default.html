@@ -3,91 +3,11 @@
 {% load static %}
 
 {% block content %}
-    {% if form and form.errors %}
-        {% for error, val in form.errors.items %}
-            <div class="alert alert-danger">
-                <strong>{{ error }} {{ val }}</strong>
-            </div>
-        {% endfor %}
-    {% endif %}
 
-    <form action="campaign" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="name">Campaign Name:</label>
-            <input name="name" type="text" class="form-control" id="name">
-        </div>
+    {% include "campaign_new.html" %}
 
-        <div class="form-group">
-            <label for="from_email">From E-Mail (format - <b>Your Name &lt;user@site.com&gt;</b>):</label>
-            <input name="from_email" type="text" class="form-control" id="from_email"
-                   value="{{ request.user.first_name }} {{ request.user.last_name }} <{{ request.user.email }}>">
-        </div>
+    {% include "campaign_list.html" %}
 
-        <div class="form-group">
-            <label for="subject">Subject:</label>
-            <input name="subject" type="text" class="form-control" id="subject">
-        </div>
+    {% include "modal_auth.html" %}
 
-        <div class="form-group box">
-            <div class="box__input">
-                <label id="csvname" for="csvfile">Drag or click to choose CSV file</label>
-                <input name="csv" type="file" class="form-control-file" id="csvfile" onchange="openFile(event.target)">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="editor">Available Variables:</label>
-            <div id="variables"></div>
-        </div>
-
-        <div class="form-group">
-            <label for="editor">Email Variable:</label>
-            <div id="email-variables"></div>
-            <input name="emailvar" type="text" class="form-control" id="emailvar" hidden>
-        </div>
-
-        <div class="form-group">
-            <label for="editor">Template:</label>
-            <div class="editor" id="editor"></div>
-        </div>
-
-        <div class="form-group" style="display: none">
-            <textarea name="template" class="form-control" rows="5" id="template"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="tpreview">Preview:</label>
-            <div id="tpreview"></div>
-        </div>
-
-        {% csrf_token %}
-        <input class="btn btn-success" type="submit" value="Create">
-    </form>
-
-    <div class="camp-table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Campaign Name</th>
-                    <th>From E-Mail</th>
-                    <th>Progress</th>
-                    <th>Completed</th>
-                    <th>Count (Sent)</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for camp in campaigns %}
-                <tr id="camp-{{camp.id}}">
-                    {% include "campaign_row.html" with camp=camp %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    {% include "authmodal.html" %}
-
-    <script src='{% static "mail/default.js" %}' crossorigin="anonymous"></script>
-    <script src='{% static "mail/dragdrop.js" %}' crossorigin="anonymous"></script>
 {% endblock %}

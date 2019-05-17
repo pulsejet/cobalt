@@ -118,34 +118,3 @@ function openFile(input) {
     reader.readAsText(input.files[0]);
     $('#csvname').text(input.files[0].name);
 };
-
-function openCampAuth(id, name) {
-    $('#authform').attr('action', `send/${id}}`);
-    $('#auth-camp-name').text(name);
-}
-
-$(document).keypress(function(e) {
-    if ($("#authModal").hasClass('show') && (e.keycode == 13 || e.which == 13)) {
-        $('#authform').trigger('submit')
-    }
-});
-
-/* Store username for convinience */
-$('#authform').on('submit', function() {
-    localStorage.setItem('username', $('#auth-username').val());
-})
-
-$('#authModal').on('show.bs.modal', function () {
-    if (localStorage.getItem('username') !== null) {
-        $('#auth-username').val(localStorage.getItem('username'));
-    }
-});
-
-/* Focus */
-$('#authModal').on('shown.bs.modal', function () {
-    if ($('#auth-username').val() == '') {
-        $('#auth-username').focus();
-    } else {
-        $('#auth-password').focus();
-    }
-})
