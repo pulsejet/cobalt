@@ -4,7 +4,7 @@
 <td>{{ camp.from_email }}</td>
 <td>
     {% if camp.processing %}
-        <img class="tick spinner" src='{% static "img/processing.png" %}' alt="True"/>
+        <img class="tick spinner" src='{% static "img/processing.svg" %}' alt="True"/>
     {% else %}
         <div class="progress">
             <div class="progress-bar" role="progressbar" aria-valuenow="{{ camp.progress }}"
@@ -16,15 +16,15 @@
 </td>
 <td>
     {% if camp.in_progress %}
-        <img class="tick spinner" src='{% static "img/processing.png" %}' alt="True"/>
+        <img class="tick spinner" src='{% static "img/processing.svg" %}' alt="True"/>
     {% elif camp.completed %}
         {% if camp.progress == 100 %}
-            <img class="tick" src='{% static "img/good.jpg" %}' alt="True"/>
+            <img class="tick" src='{% static "img/good.svg" %}' alt="True"/>
         {% else %}
-            <img class="tick" src='{% static "img/part.jpg" %}' alt="True"/>
+            <img class="tick" src='{% static "img/part.svg" %}' alt="True"/>
         {% endif %}
     {% else %}
-        <img class="tick" src='{% static "img/bad.jpg" %}' alt="False"/>
+        <img class="tick" src='{% static "img/bad.svg" %}' alt="False"/>
     {% endif %}
 </td>
 <td>{{ camp.num_mails }} ({{ camp.num_sent }})</td>

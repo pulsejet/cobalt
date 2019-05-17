@@ -4,19 +4,19 @@
     <td>{{ m.email }}</td>
     <td>
         {% if m.success %}
-            <img class="tick" src='{% static "img/good.jpg" %}' alt="T"/>
+            <img class="tick" src='{% static "img/good.svg" %}' alt="T"/>
         {% else %}
-            <img class="tick" src='{% static "img/bad.jpg" %}' alt="F"/>
+            <img class="tick" src='{% static "img/bad.svg" %}' alt="F"/>
         {% endif %}
     </td>
 
     {% if campaign.mailtrack %}
     <td>
         {% if m.read_count > 0 %}
-            <img class="tick" src='{% static "img/good.jpg" %}' alt="T"
+            <img class="tick" src='{% static "img/good.svg" %}' alt="T"
                  data-toggle="tooltip" title="{{ m.read_count }}" data-placement="right" />
         {% else %}
-            <img class="tick" src='{% static "img/bad.jpg" %}' alt="F"
+            <img class="tick" src='{% static "img/bad.svg" %}' alt="F"
                  data-toggle="tooltip" title="No data" data-placement="right" />
         {% endif %}
     </td>
