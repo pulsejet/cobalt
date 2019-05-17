@@ -55,6 +55,7 @@
     height: 1.3em;
     float: left;
     margin-right: .5em;
+    cursor: pointer;
 }
 
 .radio .cr {
