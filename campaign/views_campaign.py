@@ -1,4 +1,5 @@
 """Views for campaign objects."""
+from typing import List
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
@@ -6,6 +7,7 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse
 from django.views.decorators.http import require_http_methods
 import campaign.tasks as tasks
 from campaign.models import Campaign
+from campaign.models import Mail
 from campaign.forms import NewCampaignForm
 from campaign.mail import test_auth
 from campaign.utils import annotate_campaign_progress
@@ -63,8 +65,9 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
 def campaign_get(request: HttpRequest, pk: str) -> HttpResponse:
     """View for a single campaign."""
 
-    queryset: Campaign = Campaign.objects.get(id=pk, created_by=request.user)
-    context = {"campaign": queryset, "settings": settings}
+    camp: Campaign = Campaign.objects.get(id=pk, created_by=request.user)
+    mails: List[Mail] = camp.mails.order_by('success')
+    context = {"campaign": camp, "settings": settings, "mails": mails}
     return render(request, 'campaign.html', context=context)
 
 

@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for m in campaign.mails.all %}
+            {% for m in mails %}
                 {% include "mail_row.html" with m=m campaign=campaign %}
             {% endfor %}
             </tbody>
