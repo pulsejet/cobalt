@@ -16,7 +16,7 @@
 
     <div class="form-group">
         <label for="from_email">From E-Mail (format - <b>Your Name &lt;user@site.com&gt;</b>):</label>
-        <input name="from_email" type="text" class="form-control" id="from_email"
+        <input name="from_email" type="text" class="form-control" id="from-email"
                 value="{{ request.user.first_name }} {{ request.user.last_name }} <{{ request.user.email }}>">
     </div>
 
@@ -30,6 +30,22 @@
             <input name="mailtrack" type="checkbox" value="" checked id="mailtrack">
             <span class="cr"><img class="cr-icon" src="{% static 'img/check.svg' %}" /></span>
             Enable mail tracking
+        </label>
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input name="bcc_user" type="checkbox" value="" id="bcc_user">
+            <span class="cr"><img class="cr-icon danger" src="{% static 'img/check.svg' %}" /></span>
+            Send a copy to <span id="user-email-copy">{{ request.user.email }}</span>
+        </label>
+    </div>
+
+    <div class="checkbox" id="bcc_from_div">
+        <label>
+            <input name="bcc_from" type="checkbox" value="" id="bcc_from">
+            <span class="cr"><img class="cr-icon danger" src="{% static 'img/check.svg' %}" /></span>
+            Send a copy to <span id="from-email-copy">{{ request.user.email }}</span>
         </label>
     </div>
 

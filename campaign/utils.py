@@ -25,7 +25,8 @@ def send_mail_object(server: smtplib.SMTP, mail: Mail) -> None:
 
         send_html_mail(
             server, data, mail.campaign.from_email,
-            mail.email, mail.campaign.subject
+            mail.email, mail.campaign.subject,
+            bcc=mail.campaign.bcc
         )
 
         MailSentLog.log(mail, data)

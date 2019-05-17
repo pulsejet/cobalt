@@ -32,6 +32,7 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
 
     form = NewCampaignForm(request.POST, request.FILES)
     if form.is_valid():
+        # Get all fields
         name = request.POST['name']
         from_email = request.POST['from_email']
         subject = request.POST['subject']
@@ -39,11 +40,19 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
         emailvar = request.POST['emailvar']
         mailtrack = 'mailtrack' in request.POST
 
+        # Construct bcc string
+        bcc = list()
+        if 'bcc_user' in request.POST:
+            bcc.append(request.user.email)
+        if 'bcc_from' in request.POST:
+            bcc.append(from_email)
+        bcc = ', '.join(bcc)
+
         # Create new campaign
         camp = Campaign.objects.create(
             name=name, from_email=from_email, template=template, subject=subject,
             csv=request.FILES['csv'], email_variable=emailvar, created_by=request.user,
-            mailtrack=mailtrack)
+            mailtrack=mailtrack, bcc=bcc)
         tasks.process_campaign.delay(camp.id)
     else:
         return campaign_home(request, form=form)

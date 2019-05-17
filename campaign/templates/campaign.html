@@ -5,6 +5,10 @@
 {% block content %}
     <h3>{{ campaign.name }}</h3>
     <h5>{{ campaign.subject }}</h5>
+    {% if campaign.bcc %}
+    <div>
+    <h5 style="font-family: monospace">bcc: {{ campaign.bcc }}</h5>
+    {% endif %}
 
     <div class="camp-table">
         <table class="table">

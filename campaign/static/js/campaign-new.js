@@ -126,3 +126,25 @@ function openFile(input) {
     reader.readAsText(input.files[0]);
     $('#csvname').text(input.files[0].name);
 };
+
+function fromEmailChange() {
+    let str = $('#from-email').val();
+    if (str.includes('<') && str.includes('>')) {
+        str = $.trim(str.substring(
+            str.lastIndexOf('<') + 1,
+            str.lastIndexOf('>')
+        ));
+    }
+    if ($('#user-email-copy').text() == str) {
+        $('#bcc_from_div').hide();
+        $('#bcc_from').prop('checked', false);
+    } else {
+        $('#bcc_from_div').show();
+    }
+    $('#from-email-copy').text(str);
+}
+
+$('#from-email').on('input', function() {
+    fromEmailChange();
+});
+fromEmailChange();

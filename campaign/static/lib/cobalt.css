@@ -62,6 +62,10 @@
     border-radius: 50%;
 }
 
+.cr-icon.danger {
+    filter: invert(13%) sepia(95%) saturate(7500%) hue-rotate(359deg) brightness(92%) contrast(118%);
+}
+
 .checkbox .cr .cr-icon,
 .radio .cr .cr-icon {
     position: absolute;

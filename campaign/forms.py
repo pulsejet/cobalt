@@ -11,3 +11,5 @@ class NewCampaignForm(forms.Form):
     template = forms.CharField()
     emailvar = forms.CharField()
     mailtrack = forms.BooleanField(required=False)
+    bcc_user = forms.BooleanField(required=False)
+    bcc_from = forms.BooleanField(required=False)
