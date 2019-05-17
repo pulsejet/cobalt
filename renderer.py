@@ -2,6 +2,7 @@
 import datetime
 import html
 import json
+from django.conf import settings
 
 def cobalt_render(template: str, values: str) -> str:
     """Render a template to the email."""
@@ -14,6 +15,10 @@ def cobalt_render(template: str, values: str) -> str:
         template = template.replace('{{' + col + '}}', values[col])
 
     return template
+
+def mailtrack(rendered: str, mid: str) -> str:
+    """Add mailtrack image to a rendered template."""
+    return rendered + str(' <img src="%smt/%s" /> ' % (settings.FULL_ROOT_PATH, mid))
 
 def get_log_mail(mail, rendered: str) -> str:
     return '''\

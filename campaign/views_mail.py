@@ -1,4 +1,5 @@
 """Views for Mail objects."""
+import base64
 import smtplib
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -10,6 +11,8 @@ from campaign.mail import close_connection
 from campaign.models import Mail
 from campaign.utils import send_mail_object
 from renderer import cobalt_render
+
+PIXEL_GIF_DATA = base64.b64decode(b"R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
 
 @login_required
 def mail_preview(request: HttpRequest, pk: str) -> HttpResponse:
@@ -30,3 +33,15 @@ def mail_send(request: HttpRequest, pk: str) -> HttpResponse:
     close_connection(server)
 
     return HttpResponseRedirect(reverse('campaign', args=[mail.campaign.id]))
+
+def mail_track(request: HttpRequest, pk: str) -> HttpResponse:
+    """Returns a blank pixel and increments read count."""
+
+    # Increment read count
+    mail: Mail = Mail.objects.filter(id=pk, campaign__created_by=request.user).first()
+    if mail:
+        mail.read_count += 1
+        mail.save()
+
+    # Return blank pixel
+    return HttpResponse(PIXEL_GIF_DATA, content_type='image/gif')

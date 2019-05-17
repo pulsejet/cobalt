@@ -4,9 +4,18 @@
     <td>{{ m.email }}</td>
     <td>
         {% if m.success %}
-            <img class="tick" src='{% static "mail/good.jpg" %}' alt="True"/>
+            <img class="tick" src='{% static "mail/good.jpg" %}' alt="T"/>
         {% else %}
-            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="False"/>
+            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="F"/>
+        {% endif %}
+    </td>
+    <td>
+        {% if m.read_count > 0 %}
+            <img class="tick" src='{% static "mail/good.jpg" %}' alt="T"
+                 data-toggle="tooltip" title="{{ m.read_count }}" data-placement="right" />
+        {% else %}
+            <img class="tick" src='{% static "mail/bad.jpg" %}' alt="F"
+                 data-toggle="tooltip" title="No data" data-placement="right" />
         {% endif %}
     </td>
     <td>{{ m.try_count }}</td>

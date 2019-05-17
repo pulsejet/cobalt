@@ -12,6 +12,7 @@ from campaign.mail import get_connection
 from campaign.mail import close_connection
 from renderer import cobalt_render
 from renderer import get_log_mail
+from renderer import mailtrack
 
 def send_mail_object(server: smtplib.SMTP, mail: Mail) -> None:
     """Try to send a Mail object with a connection."""
@@ -19,6 +20,8 @@ def send_mail_object(server: smtplib.SMTP, mail: Mail) -> None:
     # Try to send, store error otherwise
     try:
         data = cobalt_render(mail.campaign.template, mail.data)
+        if mail.campaign.mailtrack:
+            data = mailtrack(data, mail.id)
 
         send_html_mail(
             server, data, mail.campaign.from_email,

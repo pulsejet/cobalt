@@ -21,6 +21,7 @@ class Campaign(models.Model):
     template = models.TextField()
     csv = models.FileField(null=True)
     subject = models.CharField(max_length=150, default='')
+    mailtrack = models.BooleanField(default=True)
 
     progress = 0
 
@@ -39,6 +40,7 @@ class Mail(models.Model):
     try_count = models.IntegerField(default=False)
     success = models.BooleanField(default=False)
     error = models.TextField(blank=True)
+    read_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.campaign.name + ' - ' + self.email

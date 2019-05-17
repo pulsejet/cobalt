@@ -123,6 +123,7 @@ SITE_HEADER = "SDF"
 STATIC_URL = '/static/'
 MEDIA_ROOT = 'uploaded'
 BASE_URL = '/'
+FULL_ROOT_PATH = 'https://gymkhana.iitb.ac.in' + BASE_URL
 SMTP_SERVER = 'smtp-auth.iitb.ac.in'
 SMTP_PORT = 25
 

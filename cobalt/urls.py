@@ -35,6 +35,7 @@ urlpatterns = [
 
     path('preview/<pk>', views_mail.mail_preview),
     path('mail-send/<pk>', views_mail.mail_send),
+    path('mt/<pk>', views_mail.mail_track),
 
     path('accounts/login/', LoginView.as_view(template_name='login.html')),
     path('signout', views_other.cobalt_logout),
