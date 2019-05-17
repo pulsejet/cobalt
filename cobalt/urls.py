@@ -30,10 +30,11 @@ urlpatterns = [
     path('campaign-row/<pk>', views_campaign.campaign_row),
     path('send/<pk>', views_campaign.campaign_send),
     path('campaign', views_campaign.campaign_create),
-    path('campaign/<pk>', views_campaign.campaign_get),
+    path('campaign/<pk>', views_campaign.campaign_get, name='campaign'),
     path('del-campaign/<pk>', views_campaign.campaign_destroy),
 
     path('preview/<pk>', views_mail.mail_preview),
+    path('mail-send/<pk>', views_mail.mail_send),
 
     path('accounts/login/', LoginView.as_view(template_name='login.html')),
     path('signout', views_other.cobalt_logout),

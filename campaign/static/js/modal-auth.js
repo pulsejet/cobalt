@@ -13,11 +13,11 @@ $('#auth-form').on('submit', function() {
 /** Initialize modal before opening */
 $('#authModal').on('show.bs.modal', function (event) {
     /* Retrieve arguments */
-    const id = $(event.relatedTarget).attr('data-cobalt-id');
-    const name = $(event.relatedTarget).attr('data-cobalt-name');
+    const url = $(event.relatedTarget).attr('data-cobalt-url');
+    const name = $(event.relatedTarget).attr('data-cobalt-msg');
 
     /* Set arguments for form */
-    $('#auth-form').attr('action', `send/${id}}`);
+    $('#auth-form').attr('action', url);
     $('#auth-camp-name').text(name);
 
     /* Set username fro localStorage */

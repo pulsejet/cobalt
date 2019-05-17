@@ -31,8 +31,8 @@
 <td>
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#authModal"
         {% if camp.processing or camp.in_progress %} disabled {% endif %}
-        data-cobalt-id="{{ camp.id }}"
-        data-cobalt-name="{{ camp.name }}">
+        data-cobalt-url="send/{{ camp.id }}"
+        data-cobalt-msg="Sending campaign {{ camp.name }}">
         Send
     </button>
     <a class="btn btn-primary" href="campaign/{{ camp.id }}">View</a>
