@@ -1,6 +1,9 @@
+"""Forms for creating campaigns."""
 from django import forms
 
 class NewCampaignForm(forms.Form):
+    """Form for creating new campaign."""
+
     name = forms.CharField()
     subject = forms.CharField()
     from_email = forms.CharField()

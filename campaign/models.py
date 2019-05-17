@@ -58,7 +58,7 @@ class MailSentLog(models.Model):
         return self.campaign_name + ' - ' + self.email
 
     @staticmethod
-    def log(mail, rendered):
+    def log(mail: Mail, rendered: str) -> None:
         """Log using a Mail object and rendered mail."""
 
         data = '''\

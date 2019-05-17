@@ -16,20 +16,25 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
 from django.urls import path
-import campaign.views as mail_views
+import campaign.views_campaign as views_campaign
+import campaign.views_mail as views_mail
+import views_other
 
 admin.site.site_header = 'Cobalt Admin'
-handler500 = 'campaign.views.custom_500'
+handler500 = 'views_ther.custom_500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', mail_views.mail, name='default'),
-    path('campaign-row/<pk>', mail_views.campaign_row),
-    path('send/<pk>', mail_views.start_send),
-    path('campaign', mail_views.campaign),
-    path('campaign/<pk>', mail_views.campaign_view),
-    path('del-campaign/<pk>', mail_views.campaign_del),
-    path('preview/<pk>', mail_views.preview),
+
+    path('', views_campaign.campaign_home, name='default'),
+    path('campaign-row/<pk>', views_campaign.campaign_row),
+    path('send/<pk>', views_campaign.campaign_send),
+    path('campaign', views_campaign.campaign_create),
+    path('campaign/<pk>', views_campaign.campaign_get),
+    path('del-campaign/<pk>', views_campaign.campaign_destroy),
+
+    path('preview/<pk>', views_mail.mail_preview),
+
     path('accounts/login/', LoginView.as_view(template_name='login.html')),
-    path('signout', mail_views.cobalt_logout),
+    path('signout', views_other.cobalt_logout),
 ]
