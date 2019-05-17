@@ -1,4 +1,5 @@
 {% load static %}
+
 <td>{{ camp.name }}</td>
 <td>{{ camp.from_email }}</td>
 <td>
@@ -30,7 +31,8 @@
 <td>
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#authModal"
         {% if camp.processing or camp.in_progress %} disabled {% endif %}
-        onclick='openCampAuth("{{ camp.id }}", "{{ camp.name }}")'>
+        data-cobalt-id="{{ camp.id }}"
+        data-cobalt-name="{{ camp.name }}">
         Send
     </button>
     <a class="btn btn-primary" href="campaign/{{ camp.id }}">View</a>

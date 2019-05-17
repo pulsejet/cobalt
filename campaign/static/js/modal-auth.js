@@ -1,27 +1,26 @@
-/**
- * Open the authentication modal for a campaign
- * @param {string} id Id of campaign
- * @param {string} name Name of the campaign
- */
-function openCampAuth(id, name) {
-    $('#authform').attr('action', `send/${id}}`);
-    $('#auth-camp-name').text(name);
-}
-
 /** Trigger auth modal submit on pressing enter */
 $(document).keypress(function(e) {
     if ($("#authModal").hasClass('show') && (e.keycode == 13 || e.which == 13)) {
-        $('#authform').trigger('submit')
+        $('#auth-form').trigger('submit')
     }
 });
 
 /** Store username in localStorage on submitting */
-$('#authform').on('submit', function() {
+$('#auth-form').on('submit', function() {
     localStorage.setItem('username', $('#auth-username').val());
 })
 
-/** Get username from localStorage before opening */
-$('#authModal').on('show.bs.modal', function () {
+/** Initialize modal before opening */
+$('#authModal').on('show.bs.modal', function (event) {
+    /* Retrieve arguments */
+    const id = $(event.relatedTarget).attr('data-cobalt-id');
+    const name = $(event.relatedTarget).attr('data-cobalt-name');
+
+    /* Set arguments for form */
+    $('#auth-form').attr('action', `send/${id}}`);
+    $('#auth-camp-name').text(name);
+
+    /* Set username fro localStorage */
     if (localStorage.getItem('username') !== null) {
         $('#auth-username').val(localStorage.getItem('username'));
     }
