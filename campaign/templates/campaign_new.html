@@ -49,6 +49,10 @@
         </label>
     </div>
 
+    <div id="mailtrack-copy-caution">
+        (caution: opening copies will trigger mail tracking)
+    </div>
+
     <div class="form-group box">
         <div class="box__input">
             <label id="csvname" for="csvfile">Drag or click to choose CSV file</label>
@@ -91,3 +95,11 @@
 
 <script src='{% static "js/campaign-new.js" %}'></script>
 <script src='{% static "js/dragdrop.js" %}'></script>
+
+<style>
+    #mailtrack-copy-caution {
+        margin-top: -5px;
+        margin-bottom: 15px;
+        color: gray;
+    }
+</style>
