@@ -34,7 +34,7 @@ function preprocessHTML(html) {
             processed += html[i].outerHTML;
         }
     }
-    processed = `<div style="white-space:pre">${processed}</div>`
+    processed = `<div style="white-space:pre-wrap">${processed}</div>`
     return processed
 }
 
