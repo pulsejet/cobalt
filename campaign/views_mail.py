@@ -4,6 +4,7 @@ import smtplib
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.cache import never_cache
 from django.http import HttpRequest
 from django.shortcuts import HttpResponse, HttpResponseRedirect, reverse
 from campaign.mail import get_connection
@@ -34,6 +35,7 @@ def mail_send(request: HttpRequest, pk: str) -> HttpResponse:
 
     return HttpResponseRedirect(reverse('campaign', args=[mail.campaign.id]))
 
+@never_cache
 def mail_track(request: HttpRequest, pk: str) -> HttpResponse:
     """Returns a blank pixel and increments read count."""
 
