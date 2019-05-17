@@ -21,7 +21,7 @@ import campaign.views_mail as views_mail
 import views_other
 
 admin.site.site_header = 'Cobalt Admin'
-handler500 = 'views_ther.custom_500'
+handler500 = 'views_other.custom_500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
