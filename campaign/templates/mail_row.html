@@ -25,12 +25,14 @@
     <td>{{ m.try_count }}</td>
     <td>{{ m.error }}</td>
     <td>
-        <button type="button" class="btn {% if m.success %} btn-danger {% else %} btn-success {% endif %}"
-            data-toggle="modal" data-target="#authModal"
-            data-cobalt-url="mail-send/{{ m.id }}"
-            data-cobalt-msg="Sending email to {{ m.email }}">
-            {% if m.success %} Resend {% else %} Send {% endif %}
-        </button>
-        <button class="btn btn-primary cobalt-preview-mail" data-cobalt-id="{{ m.id }}">Preview</button>
+        <img src='{% static "img/sendmail.svg" %}' class='image-button {% if m.success %} danger {% endif %}'
+             data-toggle="modal" data-target="#authModal"
+             data-cobalt-url="mail-send/{{ m.id }}"
+             data-cobalt-msg="Sending email to {{ m.email }}"
+             title="{% if m.success %} Resend {% else %} Send {% endif %}" />
+        <img src='{% static "img/preview.svg" %}'
+             class='image-button cobalt-preview-mail'
+             data-cobalt-id="{{ m.id }}"
+             title="Preview" />
     </td>
 </tr>

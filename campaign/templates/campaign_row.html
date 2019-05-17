@@ -29,16 +29,24 @@
 </td>
 <td>{{ camp.num_mails }} ({{ camp.num_sent }})</td>
 <td>
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#authModal"
+    <img src='{% static "img/sendmail.svg" %}' class='image-button'
+        title="Send"
+        data-toggle="modal" data-target="#authModal"
         {% if camp.processing or camp.in_progress %} disabled {% endif %}
         data-cobalt-url="send/{{ camp.id }}"
-        data-cobalt-msg="Sending campaign {{ camp.name }}">
-        Send
-    </button>
-    <a class="btn btn-primary" href="campaign/{{ camp.id }}">View</a>
-    <form class="fbtn" action="del-campaign/{{ camp.id }}" method="POST">
+        data-cobalt-msg="Sending campaign {{ camp.name }}"/>
+
+    {% spaceless %}
+    <a href="campaign/{{ camp.id }}" title="View">
+        <img src='{% static "img/preview.svg" %}' class='image-button' />
+    </a>
+
+    <img title="Delete" src='{% static "img/delete.svg" %}' class='image-button'
+         data-form-submit="#del-{{ camp.id }}" />
+    {% endspaceless %}
+
+    <form class="fbtn" action="del-campaign/{{ camp.id }}" method="POST" id="del-{{ camp.id }}">
         {% csrf_token %}
-        <input class="btn btn-danger" type="submit" value="Delete">
     </form>
 </td>
 

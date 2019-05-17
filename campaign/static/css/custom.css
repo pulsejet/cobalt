@@ -100,6 +100,20 @@ td, th {
     to {transform:rotate(360deg);}
 }
 
+.image-button {
+    height: 30px;
+    cursor: pointer;
+    filter: grayscale(100%);
+    outline: none;
+    user-select: none;
+}
+.image-button:hover {
+    filter: grayscale(0);
+}
+.image-button.danger:hover {
+    filter: sepia(1) hue-rotate(-70deg) saturate(8) grayscale(0);
+}
+
 /* Quilljs */
 .ql-editor{
     min-height:150px;
