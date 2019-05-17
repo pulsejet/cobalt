@@ -38,7 +38,7 @@ def mail_track(request: HttpRequest, pk: str) -> HttpResponse:
     """Returns a blank pixel and increments read count."""
 
     # Increment read count
-    mail: Mail = Mail.objects.filter(id=pk, campaign__created_by=request.user).first()
+    mail: Mail = Mail.objects.filter(id=pk).first()
     if mail:
         mail.read_count += 1
         mail.save()
