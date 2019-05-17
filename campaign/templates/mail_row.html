@@ -9,6 +9,8 @@
             <img class="tick" src='{% static "mail/bad.jpg" %}' alt="F"/>
         {% endif %}
     </td>
+
+    {% if campaign.mailtrack %}
     <td>
         {% if m.read_count > 0 %}
             <img class="tick" src='{% static "mail/good.jpg" %}' alt="T"
@@ -18,6 +20,8 @@
                  data-toggle="tooltip" title="No data" data-placement="right" />
         {% endif %}
     </td>
+    {% endif %}
+
     <td>{{ m.try_count }}</td>
     <td>{{ m.error }}</td>
     <td>

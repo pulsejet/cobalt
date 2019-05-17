@@ -12,7 +12,9 @@
                 <tr>
                     <th>Email</th>
                     <th>Sent</th>
+                    {% if campaign.mailtrack %}
                     <th>Read</th>
+                    {% endif %}
                     <th>Tries</th>
                     <th>Error</th>
                     <th></th>
@@ -20,7 +22,7 @@
             </thead>
             <tbody>
             {% for m in campaign.mails.all %}
-                {% include "mail_row.html" with m=m %}
+                {% include "mail_row.html" with m=m campaign=campaign %}
             {% endfor %}
             </tbody>
         </table>
