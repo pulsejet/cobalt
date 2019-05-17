@@ -21,6 +21,8 @@ a.header, a.header * {
     font-weight: bold;
     font-family: monospace;
     white-space: nowrap;
+    outline: none;
+    user-select: none;
 }
 a.header::hover { text-decoration: none; }
 a.header {
