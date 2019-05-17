@@ -33,4 +33,4 @@ $('#authModal').on('shown.bs.modal', function () {
     } else {
         $('#auth-password').focus();
     }
-})
+});
