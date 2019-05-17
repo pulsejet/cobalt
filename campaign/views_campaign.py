@@ -37,11 +37,13 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
         subject = request.POST['subject']
         template = request.POST['template']
         emailvar = request.POST['emailvar']
+        mailtrack = 'mailtrack' in request.POST
 
         # Create new campaign
         camp = Campaign.objects.create(
             name=name, from_email=from_email, template=template, subject=subject,
-            csv=request.FILES['csv'], email_variable=emailvar, created_by=request.user)
+            csv=request.FILES['csv'], email_variable=emailvar, created_by=request.user,
+            mailtrack=mailtrack)
         tasks.process_campaign.delay(camp.id)
     else:
         return campaign_home(request, form=form)

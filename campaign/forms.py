@@ -10,3 +10,4 @@ class NewCampaignForm(forms.Form):
     csv = forms.FileField()
     template = forms.CharField()
     emailvar = forms.CharField()
+    mailtrack = forms.BooleanField(required=False)
