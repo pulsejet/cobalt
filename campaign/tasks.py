@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 import io
+import time
 import smtplib
 import csv
 import json
@@ -98,6 +99,7 @@ def send_campaign(cid, user, passw):
     # Send all remaining emails
     try:
         for mail in camp.mails.filter(success=False):
+            time.sleep(0.1)
             send_mail(server, mail)
     finally:
         # Clean up and mark done
