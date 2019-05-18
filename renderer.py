@@ -18,7 +18,7 @@ def cobalt_render(template: str, values: str) -> str:
 
 def mailtrack(rendered: str, mid: str) -> str:
     """Add mailtrack image to a rendered template."""
-    return rendered + str(' <img style="opacity: 0.05" src="%smt/%s" /> ' % (settings.FULL_ROOT_PATH, mid))
+    return rendered + str(' <img src="%smt/%s" /> ' % (settings.FULL_ROOT_PATH, mid))
 
 def get_log_mail(mail, rendered: str) -> str:
     return '''\
