@@ -44,7 +44,7 @@
     </a>
 
     <img title="Delete" src='{% static "img/delete.svg" %}' class='image-button'
-         data-form-submit="#del-{{ camp.id }}" />
+         onclick="$('#del-{{ camp.id }}').trigger('submit')" />
     {% endspaceless %}
 
     <form class="fbtn" action="del-campaign/{{ camp.id }}" method="POST" id="del-{{ camp.id }}">
