@@ -4,7 +4,14 @@
 
 {% block content %}
 
-    {% include "campaign_new.html" %}
+    <button class="btn btn-primary" type="button" data-toggle="collapse"
+        data-target="#new-campaign" aria-expanded="false" aria-controls="new-campaign">
+        New campaign
+    </button>
+
+    <div class="collapse" id="new-campaign" style="margin-top: 20px;">
+        {% include "campaign_new.html" %}
+    </div>
 
     {% include "campaign_list.html" %}
 
