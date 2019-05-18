@@ -4,6 +4,7 @@ body {
 
 #content-main {
     margin: 0 auto;
+    margin-top: 40px;
     width: 400px;
     max-width: 85%;
     font-family: monospace;
