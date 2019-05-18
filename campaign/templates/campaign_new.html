@@ -11,18 +11,18 @@
 <form action="campaign" method="POST" enctype="multipart/form-data">
     <div class="form-group">
         <label for="name">Campaign Name:</label>
-        <input name="name" type="text" class="form-control" id="name">
+        <input name="name" type="text" class="form-control" id="name" required>
     </div>
 
     <div class="form-group">
         <label for="from_email">From E-Mail (format - <b>Your Name &lt;user@site.com&gt;</b>):</label>
-        <input name="from_email" type="text" class="form-control" id="from-email"
+        <input name="from_email" type="text" class="form-control" id="from-email" required
                 value="{{ request.user.first_name }} {{ request.user.last_name }} <{{ request.user.email }}>">
     </div>
 
     <div class="form-group">
         <label for="subject">Subject:</label>
-        <input name="subject" type="text" class="form-control" id="subject">
+        <input name="subject" type="text" class="form-control" id="subject" required>
     </div>
 
     <div class="checkbox">
@@ -56,7 +56,8 @@
     <div class="form-group box">
         <div class="box__input">
             <label id="csvname" for="csvfile">Drag or click to choose CSV file</label>
-            <input name="csv" type="file" class="form-control-file" id="csvfile" onchange="openFile(event.target)">
+            <input name="csv" type="file" class="form-control-file" required
+                   id="csvfile" onchange="openFile(event.target)">
         </div>
     </div>
 
@@ -68,7 +69,7 @@
     <div class="form-group">
         <label for="editor">Email Variable:</label>
         <div id="email-variables"></div>
-        <input name="emailvar" type="text" class="form-control" id="emailvar" hidden>
+        <input name="emailvar" type="text" class="form-control" id="emailvar" hidden required>
     </div>
 
     <div class="form-group">
@@ -77,7 +78,7 @@
     </div>
 
     <div class="form-group" style="display: none">
-        <textarea name="template" class="form-control" rows="5" id="template"></textarea>
+        <textarea name="template" class="form-control" rows="5" id="template" required></textarea>
     </div>
 
     <div class="form-group">
