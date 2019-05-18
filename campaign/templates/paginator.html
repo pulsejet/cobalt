@@ -1,0 +1,12 @@
+<div class="text-right">
+    {% if page > 0 %}
+    <a class="btn btn-primary" href="{{ request.path|slice:'1:' }}?p={{ page | add:-1 }}">
+        Prev
+    </a>
+    {% endif %}
+    {% if has_next %}
+    <a class="btn btn-primary" href="{{ request.path|slice:'1:' }}?p={{ page |  add:1 }}">
+        Next
+    </a>
+    {% endif %}
+</div>

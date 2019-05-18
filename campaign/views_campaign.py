@@ -14,16 +14,28 @@ from campaign.utils import annotate_campaign_progress
 from campaign.utils import annotate_campaign_queryset
 from views_other import error
 
+MAIL_PER_PAGE = 500
+CAMP_PER_PAGE = 15
+
 @login_required
 def campaign_home(request: HttpRequest, form: NewCampaignForm = None) -> HttpResponse:
     """Default view."""
+
+    page = int(request.GET.get('p', 0))
     queryset = Campaign.objects.filter(created_by=request.user).order_by('-time_of_creation')
     queryset = annotate_campaign_queryset(queryset)
+    queryset = queryset[page * CAMP_PER_PAGE : (page + 1) * CAMP_PER_PAGE]
 
     for camp in queryset:
         annotate_campaign_progress(camp)
 
-    context = {"campaigns": queryset, "form": form, "settings": settings}
+    context = {
+        "campaigns": queryset,
+        "form": form,
+        "settings": settings,
+        "has_next": len(queryset) >= CAMP_PER_PAGE,
+        "page": page,
+    }
     return render(request, 'default.html', context=context)
 
 
@@ -65,9 +77,18 @@ def campaign_create(request: HttpRequest) -> HttpResponse:
 def campaign_get(request: HttpRequest, pk: str) -> HttpResponse:
     """View for a single campaign."""
 
+    page = int(request.GET.get('p', 0))
     camp: Campaign = Campaign.objects.get(id=pk, created_by=request.user)
     mails: List[Mail] = camp.mails.order_by('success')
-    context = {"campaign": camp, "settings": settings, "mails": mails}
+    mails = mails[page * MAIL_PER_PAGE : (page + 1) * MAIL_PER_PAGE]
+
+    context = {
+        "campaign": camp,
+        "mails": mails,
+        "settings": settings,
+        "has_next": len(mails) >= MAIL_PER_PAGE,
+        "page": page,
+    }
     return render(request, 'campaign.html', context=context)
 
 
