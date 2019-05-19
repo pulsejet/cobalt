@@ -23,7 +23,6 @@ body {
 a.header, a.header * {
     text-decoration: none;
     color: black;
-    font-weight: bold;
     font-family: 'Metal Mania', cursive;
     white-space: nowrap;
     outline: none;
