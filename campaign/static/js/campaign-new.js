@@ -1,12 +1,25 @@
-var toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+function imageHandler() {
+    var range = this.quill.getSelection();
+    var value = prompt('Enter the image URL');
+    if (value !== null) {
+        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+    }
+}
 
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+var toolbarOptions = {
+    container: [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-    ['clean']
-];
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [ 'link', 'image' ],          // add's image support
+
+        ['clean']
+    ], handlers: {
+        image: imageHandler
+    }
+};
 
 var options = {
     modules: {
