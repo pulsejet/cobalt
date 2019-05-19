@@ -16,6 +16,8 @@
         <link rel="stylesheet" href='{% static "lib/cobalt.css" %}' crossorigin="anonymous">
         <script src='{% static "lib/bootstrap.min.js" %}' crossorigin="anonymous"></script>
 
+        <link href="https://fonts.googleapis.com/css?family=Metal+Mania|Roboto&display=swap" rel="stylesheet">
+
         <link rel="apple-touch-icon" sizes="180x180" href="/static/fav/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/static/fav/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/static/fav/favicon-16x16.png">
@@ -25,12 +27,11 @@
         <meta name="msapplication-TileColor" content="#000000">
         <meta name="msapplication-config" content="/static/fav/browserconfig.xml">
         <meta name="theme-color" content="#000000">
-
     </head>
     <body>
         <div id="outerdiv">
             <div id="maindiv">
-                <a class="header" href="{{ settings.BASE_URL }}"><h1> --- Cobalt --- </h1></a>
+                <a class="header" href="{{ settings.BASE_URL }}"><h1> Cobalt </h1></a>
 
                 {% block content %}
                 {% endblock %}

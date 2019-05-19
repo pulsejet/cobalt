@@ -4,13 +4,21 @@
 
 {% block content %}
 
-    <button class="btn btn-primary" type="button" data-toggle="collapse"
-        data-target="#new-campaign" aria-expanded="false" aria-controls="new-campaign">
+    <button class="btn btn-danger" data-toggle="modal" data-target="#new-campaign-modal">
         New campaign
     </button>
 
-    <div class="collapse" id="new-campaign" style="margin-top: 20px;">
-        {% include "campaign_new.html" %}
+    <div id="new-campaign-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="new-campaign">
+                <div class="modal-body">
+                    {% include "campaign_new.html" %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-form-submit="#new-camp-form">Create</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% include "campaign_list.html" %}

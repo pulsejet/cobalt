@@ -1,7 +1,12 @@
+:root {
+    --theme-color: var(--blue);
+}
+
 body {
     overflow-y: scroll;
     overflow-x: hidden;
-    background-color: #fcfcfc;
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
 }
 
 #maindiv {
@@ -19,20 +24,16 @@ a.header, a.header * {
     text-decoration: none;
     color: black;
     font-weight: bold;
-    font-family: monospace;
+    font-family: 'Metal Mania', cursive;
     white-space: nowrap;
     outline: none;
     user-select: none;
+    font-size: 1.9em;
+    width: 99%;
 }
 a.header::hover { text-decoration: none; }
 a.header {
-    width: 100%;
     text-align: center;
-}
-@media (max-width: 600px) {
-    a.header, a.header * {
-        font-size: 1.4em;
-    }
 }
 
 .footer {
@@ -53,8 +54,6 @@ a.header {
 .camp-table table {
     min-width: 1000px;
     margin-top: 20px;
-    border: 2px solid #eee;
-    background-color: white;
 }
 
 .tick {
@@ -62,7 +61,7 @@ a.header {
 }
 
 th {
-    background-color: black;
+    background-color: var(--theme-color);
     color: white;
 }
 
@@ -91,7 +90,7 @@ td, th {
     border: 2px solid #ddd;
 }
 
-#variables {
+#variables, #email-variables {
     font-family: monospace;
 }
 
@@ -114,12 +113,19 @@ td, th {
     filter: sepia(1) hue-rotate(-70deg) saturate(8) grayscale(0);
 }
 
+#new-campaign {
+    background-color: #fcfcfc;
+    padding: 30px;
+}
+
 /* Quilljs */
 .ql-editor{
     min-height:150px;
+    background-color: white;
 }
 
 #tpreview {
     min-height: 50px;
     margin-bottom: 20px;
+    background-color: white;
 }
