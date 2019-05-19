@@ -12,3 +12,6 @@ Cobalt is a minimalistic no-nonsense tool to send out customized mail with conve
 
 ## Usage
 Run as any other django with celery app. On Windows, use `celery -A cobalt worker --pool=solo -l info` for testing.
+
+## License
+Licensed under AGPLv3
